@@ -32,7 +32,6 @@ public class GlobalExceptionHandler
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
-
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public final ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException e, HandlerMethod handlerMethod)
     {
@@ -48,7 +47,6 @@ public class GlobalExceptionHandler
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         return new ResponseEntity<>(e.getData(), e.getStatus());
     }
-
 
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<Object> handleException(Exception e, HandlerMethod handlerMethod)

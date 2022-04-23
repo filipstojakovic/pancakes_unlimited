@@ -1,5 +1,6 @@
 package net.croz.pancakes_unlimited.services.impl;
 
+import net.croz.pancakes_unlimited.exceptions.BadRequestException;
 import net.croz.pancakes_unlimited.exceptions.NotFoundException;
 import net.croz.pancakes_unlimited.models.CategoryEntity;
 import net.croz.pancakes_unlimited.repositories.CategoryEntityRepository;
@@ -34,6 +35,8 @@ public class CategoryServiceImpl implements CategoryService
     @Override
     public CategoryEntity insert(CategoryEntity category)
     {
+        if(!categoryRepository.findByName(category.getName()).isEmpty())
+            throw new BadRequestException(category.getName()+" already exists");
         return categoryRepository.saveAndFlush(category);
     }
 }

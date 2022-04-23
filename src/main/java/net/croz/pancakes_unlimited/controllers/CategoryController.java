@@ -1,5 +1,6 @@
 package net.croz.pancakes_unlimited.controllers;
 
+import net.croz.pancakes_unlimited.exceptions.BadRequestException;
 import net.croz.pancakes_unlimited.models.CategoryEntity;
 import net.croz.pancakes_unlimited.services.CategoryService;
 import org.springframework.http.HttpStatus;
@@ -34,7 +35,7 @@ public class CategoryController
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CategoryEntity insert(@RequestBody CategoryEntity category)
+    public CategoryEntity insert(@RequestBody CategoryEntity category) throws BadRequestException
     {
         //TODO: check if unique
         return categoryService.insert(category);
