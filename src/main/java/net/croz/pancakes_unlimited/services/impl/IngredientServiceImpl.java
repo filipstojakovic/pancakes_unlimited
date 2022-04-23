@@ -1,5 +1,6 @@
 package net.croz.pancakes_unlimited.services.impl;
 
+import net.croz.pancakes_unlimited.exceptions.NotFoundException;
 import net.croz.pancakes_unlimited.models.IngredientEntity;
 import net.croz.pancakes_unlimited.repositories.IngredientEntityRepository;
 import net.croz.pancakes_unlimited.services.IngredientService;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -23,6 +25,11 @@ public class IngredientServiceImpl implements IngredientService
     public List<IngredientEntity> findAll()
     {
         return ingredientRepository.findAll();
+    }
+
+    public IngredientEntity findById(Integer id)
+    {
+        return ingredientRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
     @Override

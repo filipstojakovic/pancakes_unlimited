@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 
 @Data
 @Entity
-@Table(name = "PANCAKE_has_INGREDIENT")
+@Table(name = "pancake_has_ingredient")
 public class PancakeHasIngredient
 {
     @EmbeddedId
