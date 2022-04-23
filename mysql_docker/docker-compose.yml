@@ -5,8 +5,6 @@ services:
   mysql-development:
     image: mysql:8.0.28
     container_name: mysql
-    cap_add:
-      - SYS_NICE
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: pancakes_unlimited_db
