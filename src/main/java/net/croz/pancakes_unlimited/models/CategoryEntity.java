@@ -14,9 +14,9 @@ public class CategoryEntity
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private String categoryId;
+    private Integer categoryId;
     @Basic
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     private String name;
 
     @JsonIgnore

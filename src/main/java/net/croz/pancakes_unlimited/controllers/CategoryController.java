@@ -26,9 +26,19 @@ public class CategoryController
         return categoryService.findAll();
     }
 
-    @PostMapping
-    public ResponseEntity<?> insert(@RequestBody CategoryEntity category)
+    @GetMapping("/{id}")
+    public CategoryEntity findById(@PathVariable Integer id)
     {
-        return new ResponseEntity<>(category, HttpStatus.OK);
+        return categoryService.findById(id);
     }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public CategoryEntity insert(@RequestBody CategoryEntity category)
+    {
+        //TODO: check if unique
+        return categoryService.insert(category);
+    }
+
+
 }

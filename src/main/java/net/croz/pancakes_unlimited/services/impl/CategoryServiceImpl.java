@@ -1,5 +1,6 @@
 package net.croz.pancakes_unlimited.services.impl;
 
+import net.croz.pancakes_unlimited.exceptions.NotFoundException;
 import net.croz.pancakes_unlimited.models.CategoryEntity;
 import net.croz.pancakes_unlimited.repositories.CategoryEntityRepository;
 import net.croz.pancakes_unlimited.services.CategoryService;
@@ -23,6 +24,11 @@ public class CategoryServiceImpl implements CategoryService
     public List<CategoryEntity> findAll()
     {
         return categoryRepository.findAll();
+    }
+
+    public CategoryEntity findById(Integer id) throws NotFoundException
+    {
+        return categoryRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
     @Override
