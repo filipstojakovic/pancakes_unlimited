@@ -35,3 +35,5 @@ build/
 ############
 .env
 /TODO
+src/main/resources/users.json
+src/main/resources/access_rules.json

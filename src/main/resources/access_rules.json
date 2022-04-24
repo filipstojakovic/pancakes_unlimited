@@ -1,0 +1,14 @@
+{
+  "access_rules": [
+    {
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "pattern": "/ingredient",
+      "roles": [
+        "employee"
+      ]
+    }
+  ]
+}
