@@ -16,6 +16,10 @@ public class PancakeEntity
     @Column(name="id")
     private Integer id;
 
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "sales_order_id", nullable = true)
+    private SalesOrderEntity pancakeOrder;
+
     @OneToMany(mappedBy = "pancake", cascade = CascadeType.ALL)
-    List<PancakeHasIngredient> pancakeIngredients=new ArrayList<>();
+    private List<PancakeHasIngredient> pancakeIngredients=new ArrayList<>();
 }

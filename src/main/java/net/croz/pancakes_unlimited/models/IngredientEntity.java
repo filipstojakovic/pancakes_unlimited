@@ -18,11 +18,14 @@ public class IngredientEntity
     @Column(name = "id", insertable = false, updatable = false)
     private Integer ingredientId;
 
-    @Column(name = "price")
-    private BigDecimal price;
-
     @Column(name = "name")
     private String name;
+
+    @Column(name = "is_healthy")
+    private Boolean isHealthy;
+
+    @Column(name = "price")
+    private BigDecimal price;
 
     @JsonIgnore
     @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL)
