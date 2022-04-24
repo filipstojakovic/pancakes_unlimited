@@ -27,3 +27,11 @@ CREATE INDEX fk_pancakes_sales_order_idx ON pancake (sales_order_id);
 -- changeset filip:18
 ALTER TABLE ingredient
     ADD is_healthy TINYINT;
+
+-- changeset filip:19
+Alter TABLE pancake MODIFY sales_order_id INT NOT NULL;
+
+-- changeset filip:20
+ALTER TABLE pancake
+    DROP PRIMARY KEY,
+    ADD PRIMARY KEY (id, sales_order_id);
