@@ -1,10 +1,9 @@
 package net.croz.pancakes_unlimited.controllers;
 
 import net.croz.pancakes_unlimited.exceptions.BadRequestException;
-import net.croz.pancakes_unlimited.models.CategoryEntity;
+import net.croz.pancakes_unlimited.models.entities.CategoryEntity;
 import net.croz.pancakes_unlimited.services.CategoryService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

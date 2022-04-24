@@ -1,9 +1,8 @@
 package net.croz.pancakes_unlimited.services;
 
-import net.croz.pancakes_unlimited.models.IngredientEntity;
+import net.croz.pancakes_unlimited.models.entities.IngredientEntity;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface IngredientService
 {

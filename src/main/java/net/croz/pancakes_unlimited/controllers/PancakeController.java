@@ -1,7 +1,6 @@
 package net.croz.pancakes_unlimited.controllers;
 
-import net.croz.pancakes_unlimited.models.IngredientEntity;
-import net.croz.pancakes_unlimited.models.PancakeEntity;
+import net.croz.pancakes_unlimited.models.entities.PancakeEntity;
 import net.croz.pancakes_unlimited.services.PancakeService;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +11,6 @@ import java.util.List;
 public class PancakeController
 {
     private final PancakeService pancakeService;
-
 
     public PancakeController(PancakeService pancakeService)
     {

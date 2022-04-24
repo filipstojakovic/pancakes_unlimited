@@ -2,7 +2,7 @@ package net.croz.pancakes_unlimited.services.impl;
 
 import net.croz.pancakes_unlimited.exceptions.BadRequestException;
 import net.croz.pancakes_unlimited.exceptions.NotFoundException;
-import net.croz.pancakes_unlimited.models.CategoryEntity;
+import net.croz.pancakes_unlimited.models.entities.CategoryEntity;
 import net.croz.pancakes_unlimited.repositories.CategoryEntityRepository;
 import net.croz.pancakes_unlimited.services.CategoryService;
 import org.springframework.stereotype.Service;

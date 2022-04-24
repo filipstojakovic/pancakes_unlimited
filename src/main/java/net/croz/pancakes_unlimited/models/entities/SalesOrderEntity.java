@@ -1,4 +1,4 @@
-package net.croz.pancakes_unlimited.models;
+package net.croz.pancakes_unlimited.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
@@ -23,7 +23,6 @@ public class SalesOrderEntity
     @Column(name = "description")
     private String description;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "pancakeOrder")
+    @OneToMany(mappedBy = "pancakeOrder", cascade = CascadeType.ALL)
     private List<PancakeEntity> pancakesById;
 }

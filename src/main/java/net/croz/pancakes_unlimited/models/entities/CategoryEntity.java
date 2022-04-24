@@ -1,4 +1,4 @@
-package net.croz.pancakes_unlimited.models;
+package net.croz.pancakes_unlimited.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;

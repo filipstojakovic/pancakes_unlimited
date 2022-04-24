@@ -1,6 +1,6 @@
 package net.croz.pancakes_unlimited.services;
 
-import net.croz.pancakes_unlimited.models.PancakeEntity;
+import net.croz.pancakes_unlimited.models.entities.PancakeEntity;
 
 import java.util.List;
 

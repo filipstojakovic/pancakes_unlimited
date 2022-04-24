@@ -1,6 +1,6 @@
 package net.croz.pancakes_unlimited.controllers;
 
-import net.croz.pancakes_unlimited.models.IngredientEntity;
+import net.croz.pancakes_unlimited.models.entities.IngredientEntity;
 import net.croz.pancakes_unlimited.services.IngredientService;
 import org.springframework.web.bind.annotation.*;
 

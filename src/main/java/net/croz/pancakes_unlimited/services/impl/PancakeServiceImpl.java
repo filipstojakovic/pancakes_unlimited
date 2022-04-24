@@ -1,9 +1,9 @@
 package net.croz.pancakes_unlimited.services.impl;
 
 import net.croz.pancakes_unlimited.exceptions.NotFoundException;
-import net.croz.pancakes_unlimited.models.IngredientEntity;
-import net.croz.pancakes_unlimited.models.PancakeEntity;
-import net.croz.pancakes_unlimited.models.PancakeHasIngredient;
+import net.croz.pancakes_unlimited.models.entities.IngredientEntity;
+import net.croz.pancakes_unlimited.models.entities.PancakeEntity;
+import net.croz.pancakes_unlimited.models.entities.PancakeHasIngredient;
 import net.croz.pancakes_unlimited.repositories.PancakeEntityRepository;
 import net.croz.pancakes_unlimited.services.IngredientService;
 import net.croz.pancakes_unlimited.services.PancakeService;

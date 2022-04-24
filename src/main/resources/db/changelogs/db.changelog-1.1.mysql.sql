@@ -27,7 +27,3 @@ CREATE INDEX fk_pancakes_sales_order_idx ON pancake (sales_order_id);
 -- changeset filip:18
 ALTER TABLE ingredient
     ADD is_healthy TINYINT;
-
-
-
-
