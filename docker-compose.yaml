@@ -6,17 +6,12 @@ services:
       - "3308:3306"
     volumes:
       - mysql-data:/var/lib/mysql
-    cap_add:
-      - SYS_NICE
-    security_opt:
-      - seccomp:unconfined
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: pancakes_unlimited_db
+    env_file:
+      - ./mysql_docker/mysql.env
     healthcheck:
-      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost", "-u", "root", "--password=root}" ]
-      timeout: 10s
-      retries: 5
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost", "-u", "${MYSQL_ROOT_USERNAME}", "--password=${MYSQL_ROOT_PASSWORD}}" ]
+      timeout: 5s
+      retries: 10
   backend:
     build: .
     ports:
@@ -25,13 +20,9 @@ services:
       - logs:/opt/pancakes_unlimited/logs
     env_file:
       - .env
-    security_opt:
-      - seccomp:unconfined
     depends_on:
       mysql:
         condition: service_healthy
-#    links:
-#      - mysqldb
 
 volumes:
   mysql-data:
