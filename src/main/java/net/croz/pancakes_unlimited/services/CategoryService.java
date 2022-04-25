@@ -8,5 +8,4 @@ public interface CategoryService
 {
     List<CategoryEntity> findAll();
     public CategoryEntity findById(Integer id);
-    CategoryEntity insert(CategoryEntity category);
 }

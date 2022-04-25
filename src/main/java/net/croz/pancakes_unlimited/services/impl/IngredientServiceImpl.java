@@ -1,9 +1,11 @@
 package net.croz.pancakes_unlimited.services.impl;
 
 import net.croz.pancakes_unlimited.exceptions.NotFoundException;
+import net.croz.pancakes_unlimited.models.dtos.IngredientDTO;
 import net.croz.pancakes_unlimited.models.entities.IngredientEntity;
 import net.croz.pancakes_unlimited.repositories.IngredientEntityRepository;
 import net.croz.pancakes_unlimited.services.IngredientService;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -13,10 +15,12 @@ import java.util.List;
 @Transactional
 public class IngredientServiceImpl implements IngredientService
 {
+    private final ModelMapper modelMapper;
     private final IngredientEntityRepository ingredientRepository;
 
-    public IngredientServiceImpl(IngredientEntityRepository ingredientRepository)
+    public IngredientServiceImpl(ModelMapper modelMapper, IngredientEntityRepository ingredientRepository)
     {
+        this.modelMapper = modelMapper;
         this.ingredientRepository = ingredientRepository;
     }
 
@@ -32,8 +36,29 @@ public class IngredientServiceImpl implements IngredientService
     }
 
     @Override
-    public IngredientEntity insert(IngredientEntity ingredient)
+    public IngredientEntity insert(IngredientDTO ingredient)
     {
-        return ingredientRepository.saveAndFlush(ingredient);
+        IngredientEntity ingredientEntity = modelMapper.map(ingredient, IngredientEntity.class);
+        ingredientEntity.setIngredientId(null);
+        ingredientEntity = ingredientRepository.saveAndFlush(ingredientEntity);
+        return findById(ingredientEntity.getIngredientId());
+    }
+
+    @Override
+    public IngredientEntity update(Integer id, IngredientDTO ingredient)
+    {
+        if (!ingredientRepository.existsById(id))
+            throw new NotFoundException();
+
+        IngredientEntity ingredientEntity = modelMapper.map(ingredient, IngredientEntity.class);
+        ingredientEntity.setIngredientId(id);
+        ingredientEntity = ingredientRepository.saveAndFlush(ingredientEntity);
+        return findById(ingredientEntity.getIngredientId());
+    }
+
+    @Override
+    public void delete(Integer id)
+    {
+        ingredientRepository.deleteById(id);
     }
 }

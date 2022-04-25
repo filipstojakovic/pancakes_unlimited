@@ -31,12 +31,4 @@ public class CategoryServiceImpl implements CategoryService
     {
         return categoryRepository.findById(id).orElseThrow(NotFoundException::new);
     }
-
-    @Override
-    public CategoryEntity insert(CategoryEntity category)
-    {
-        if(!categoryRepository.findByName(category.getName()).isEmpty())
-            throw new BadRequestException(category.getName()+" already exists");
-        return categoryRepository.saveAndFlush(category);
-    }
 }

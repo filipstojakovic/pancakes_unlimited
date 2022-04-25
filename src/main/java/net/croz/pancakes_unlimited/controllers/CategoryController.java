@@ -32,13 +32,4 @@ public class CategoryController
         return categoryService.findById(id);
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public CategoryEntity insert(@RequestBody CategoryEntity category) throws BadRequestException
-    {
-        //TODO: check if unique
-        return categoryService.insert(category);
-    }
-
-
 }

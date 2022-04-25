@@ -43,7 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
                 String encodedPassword = passwordEncoder.encode(user.getPassword());
                 inMemoryAuth
                         .withUser(user.getUsername())
-                        .password(encodedPassword) //.password("{noop}secret") If, for any reason, we don't want to encode the configured password
+                        .password(encodedPassword)  //.password("{noop}secret") If, for any reason, we don't want to encode the configured password
                         .roles(user.getRole().name());
             });
     }
@@ -52,7 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
     @Override
     protected void configure(HttpSecurity http) throws Exception
     {
-        //TODO: descrabe rules defined in json
+        //TODO: describe rules defined in json
         AuthorizationRules authorizationRules = JsonParserUtil.getObjectFromJson("rules.json", AuthorizationRules.class);
         var interceptor = http.httpBasic().and().authorizeRequests();
         for (Rule rule : authorizationRules.getRules())
