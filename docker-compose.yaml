@@ -1,4 +1,4 @@
-version: "2.1"
+version: "3.8"
 services:
   mysql:
     image: 'mysql'
@@ -9,7 +9,7 @@ services:
     env_file:
       - ./mysql_docker/mysql.env
     healthcheck:
-      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost", "-u", "${MYSQL_ROOT_USERNAME}", "--password=${MYSQL_ROOT_PASSWORD}}" ]
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost", "-u", "${MYSQL_ROOT_USERNAME-root}", "--password=${MYSQL_ROOT_PASSWORD-root}}" ]
       timeout: 5s
       retries: 10
   backend:
