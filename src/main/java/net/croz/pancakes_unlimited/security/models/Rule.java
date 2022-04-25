@@ -10,6 +10,6 @@ import java.util.List;
 public class Rule
 {
     private List<String> methods;
-    private String pattern; // end-point
+    private String pattern; // end-point/antPattern
     private List<String> roles;
 }

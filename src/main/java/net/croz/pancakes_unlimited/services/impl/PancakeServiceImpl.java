@@ -42,7 +42,6 @@ public class PancakeServiceImpl implements PancakeService
     public PancakeEntity insert(PancakeEntity pancake)
     {
         //TODO: check for base and fil
-
         PancakeEntity newPancake = new PancakeEntity();
         newPancake.getPancakeIngredients().addAll(pancake.getPancakeIngredients()
                 .stream()

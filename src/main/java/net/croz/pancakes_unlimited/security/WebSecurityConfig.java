@@ -70,28 +70,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
                         .hasAnyRole(roles);
             }
         }
+        interceptor.anyRequest().denyAll();
         interceptor.and().csrf().disable();
     }
-
-    //        @Bean
-    //        public CorsFilter corsFilter()
-    //        {
-    //            UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    //            CorsConfiguration config = new CorsConfiguration();
-    //            config.setAllowCredentials(true);
-    //            config.addAllowedOrigin("*");
-    //            config.addAllowedHeader("*");
-    //            config.addAllowedMethod("*");
-    //            config.addAllowedMethod("PATCH");
-    //            source.registerCorsConfiguration("/**", config);
-    //            return new CorsFilter(source);
-    //        }
-    //
-    //        @Bean
-    //        GrantedAuthorityDefaults grantedAuthorityDefaults()
-    //        {
-    //            return new GrantedAuthorityDefaults(""); // Remove the ROLE_ prefix
-    //        }
 
     @Bean
     public PasswordEncoder passwordEncoder()
