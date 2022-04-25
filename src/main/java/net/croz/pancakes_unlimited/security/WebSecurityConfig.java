@@ -12,15 +12,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.core.GrantedAuthorityDefaults;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
 import java.util.List;
 
@@ -28,7 +21,6 @@ import java.util.List;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 {
-
     //    setting up Authentication
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception
@@ -55,6 +47,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
         //TODO: describe rules defined in json
         AuthorizationRules authorizationRules = JsonParserUtil.getObjectFromJson("rules.json", AuthorizationRules.class);
         var interceptor = http.httpBasic().and().authorizeRequests();
+        interceptor = interceptor.antMatchers(HttpMethod.GET, SWAGGER_ANT_PATTERN).permitAll();
+
         for (Rule rule : authorizationRules.getRules())
         {
             var roles = rule.getRoles().toArray(String[]::new);
@@ -79,4 +73,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
     {
         return new BCryptPasswordEncoder();
     }
+
+    private static final String[] SWAGGER_ANT_PATTERN = {
+            // -- Swagger UI v2
+            "/v2/api-docs",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+            // -- Swagger UI v3 (OpenAPI)
+            "/v3/api-docs/**",
+            "/swagger-ui/**"
+    };
 }

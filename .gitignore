@@ -38,3 +38,5 @@ build/
 /src/main/resources/users.json
 /src/main/resources/rules.json
 /pancake_unlimited.log
+/logs/
+/mysql_docker/mysql.env
