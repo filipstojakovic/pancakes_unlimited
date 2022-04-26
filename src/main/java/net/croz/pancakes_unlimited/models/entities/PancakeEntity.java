@@ -17,11 +17,6 @@ public class PancakeEntity
     @Column(name = "id")
     private Integer id;
 
-    @JsonIgnore
-    @ManyToOne(optional = true)
-    @JoinColumn(name = "sales_order_id", nullable = true)
-    private SalesOrderEntity pancakeOrder;
-
     @OneToMany(mappedBy = "pancake", cascade = CascadeType.ALL)
     private List<PancakeHasIngredient> pancakeIngredients = new ArrayList<>();
 }

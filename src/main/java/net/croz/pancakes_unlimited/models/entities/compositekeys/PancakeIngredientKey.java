@@ -1,14 +1,10 @@
-package net.croz.pancakes_unlimited.models.entities;
+package net.croz.pancakes_unlimited.models.entities.compositekeys;
 
 import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
-
-/**
- * Composite key
- */
 @Data
 @Embeddable
 public class PancakeIngredientKey implements Serializable

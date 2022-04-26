@@ -14,24 +14,16 @@ CREATE TABLE sales_order
 );
 
 -- changeset filip:13
-ALTER TABLE pancake
-    ADD sales_order_id INT NULL;
+CREATE TABLE order_has_pancake
+(
+    pancake_id    INT NOT NULL,
+    sales_order_id INT NOT NULL,
+    quantity      INT NOT NULL DEFAULT 1,
+    CONSTRAINT PK_ORDER_HAS_PANCAKE PRIMARY KEY (pancake_id, sales_order_id),
+    CONSTRAINT fk_oder_has_pancake_sales_order FOREIGN KEY (sales_order_id) REFERENCES sales_order (id),
+    CONSTRAINT fk_oder_has_pancake_pancake FOREIGN KEY (pancake_id) REFERENCES pancake (id)
+);
 
--- changeset filip:16
-ALTER TABLE pancake
-    ADD CONSTRAINT fk_pancake_sales_order FOREIGN KEY (sales_order_id) REFERENCES sales_order (id) ON UPDATE RESTRICT ON DELETE RESTRICT;
-
--- changeset filip:17
-CREATE INDEX fk_pancakes_sales_order_idx ON pancake (sales_order_id);
-
--- changeset filip:18
+-- changeset filip:14
 ALTER TABLE ingredient
     ADD is_healthy TINYINT;
-
--- changeset filip:19
-Alter TABLE pancake MODIFY sales_order_id INT NOT NULL;
-
--- changeset filip:20
-ALTER TABLE pancake
-    DROP PRIMARY KEY,
-    ADD PRIMARY KEY (id, sales_order_id);
