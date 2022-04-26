@@ -27,7 +27,7 @@ public class CategoryServiceImpl implements CategoryService
         return categoryRepository.findAll();
     }
 
-    public CategoryEntity findById(Integer id) throws NotFoundException
+    public CategoryEntity findById(Integer id)
     {
         return categoryRepository.findById(id).orElseThrow(NotFoundException::new);
     }

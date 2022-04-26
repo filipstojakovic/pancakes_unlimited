@@ -1,0 +1,19 @@
+{
+  "users": [
+    {
+      "username": "customer",
+      "password": "osd",
+      "role": "CUSTOMER"
+    },
+    {
+      "username": "employee",
+      "password": "palacinke",
+      "role": "EMPLOYEE"
+    },
+    {
+      "username": "owner",
+      "password": "store",
+      "role": "STORE_OWNER"
+    }
+  ]
+}

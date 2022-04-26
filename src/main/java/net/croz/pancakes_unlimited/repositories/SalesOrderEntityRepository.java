@@ -6,7 +6,4 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface SalesOrderEntityRepository extends JpaRepository<SalesOrderEntity, Integer>
 {
-//    example
-//    @Query(value = "SELECT * FROM USERS", nativeQuery = true)
-//    List<User> findAllUsersNative();
 }

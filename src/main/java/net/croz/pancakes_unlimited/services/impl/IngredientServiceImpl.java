@@ -65,6 +65,8 @@ public class IngredientServiceImpl implements IngredientService
     @Override
     public void delete(Integer id)
     {
+        if(!ingredientRepository.existsById(id))
+            throw new NotFoundException();
         ingredientRepository.deleteById(id);
     }
 }
