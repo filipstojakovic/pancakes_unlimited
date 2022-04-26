@@ -8,6 +8,8 @@ import net.croz.pancakes_unlimited.services.IngredientService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -16,6 +18,8 @@ import java.util.List;
 public class IngredientServiceImpl implements IngredientService
 {
     private final ModelMapper modelMapper;
+    @PersistenceContext
+    private EntityManager entityManager;
     private final IngredientEntityRepository ingredientRepository;
 
     public IngredientServiceImpl(ModelMapper modelMapper, IngredientEntityRepository ingredientRepository)
@@ -41,6 +45,7 @@ public class IngredientServiceImpl implements IngredientService
         IngredientEntity ingredientEntity = modelMapper.map(ingredient, IngredientEntity.class);
         ingredientEntity.setIngredientId(null);
         ingredientEntity = ingredientRepository.saveAndFlush(ingredientEntity);
+        entityManager.refresh(ingredientEntity);
         return findById(ingredientEntity.getIngredientId());
     }
 
@@ -53,6 +58,7 @@ public class IngredientServiceImpl implements IngredientService
         IngredientEntity ingredientEntity = modelMapper.map(ingredient, IngredientEntity.class);
         ingredientEntity.setIngredientId(id);
         ingredientEntity = ingredientRepository.saveAndFlush(ingredientEntity);
+        entityManager.refresh(ingredientEntity);
         return findById(ingredientEntity.getIngredientId());
     }
 

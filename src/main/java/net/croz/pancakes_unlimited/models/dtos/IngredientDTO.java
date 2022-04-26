@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 @Data
 public class IngredientDTO
 {
+    private Integer categoryId;
     private String name;
     private Boolean isHealthy;
     private BigDecimal price;
