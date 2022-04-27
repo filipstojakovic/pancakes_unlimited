@@ -20,10 +20,8 @@ public class SalesOrderEntity
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
-    @Basic
     @Column(name = "order_date", nullable = false)
     private LocalDate orderDate;
-    @Basic
     @Column(name = "description")
     private String description;
 

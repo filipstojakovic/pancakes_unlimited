@@ -21,11 +21,11 @@ public class OrderHasPancake
     @JoinColumn(name = "pancake_id")
     PancakeEntity pancake;
 
+    @JsonIgnore
     @ManyToOne
     @MapsId("salesOrderId")
     @JoinColumn(name = "sales_order_id")
     SalesOrderEntity salesOrder;
-
 
     @Column(name = "quantity")
     private Integer quantity;

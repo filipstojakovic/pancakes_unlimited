@@ -19,7 +19,6 @@ public class CategoryEntity
     @Column(name = "name", unique = true)
     private String name;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "ingredientCategory")
     private List<IngredientEntity> ingredientsById;
 }
