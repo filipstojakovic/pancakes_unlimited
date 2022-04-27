@@ -24,6 +24,8 @@ public class SalesOrderEntity
     private LocalDate orderDate;
     @Column(name = "description")
     private String description;
+    @Column(name="order_number")
+    private String orderNumber;
 
     @OneToMany(mappedBy = "salesOrder", cascade = CascadeType.ALL)
     List<OrderHasPancake> orderHasPancakes = new ArrayList<>();

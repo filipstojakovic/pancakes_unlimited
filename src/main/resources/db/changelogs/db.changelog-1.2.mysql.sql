@@ -11,3 +11,7 @@ INSERT INTO category (name)
 VALUES ('voće');
 
 
+-- changeset filip:16
+ALTER TABLE sales_order
+    ADD order_number VARCHAR(255) NOT NULL;
+

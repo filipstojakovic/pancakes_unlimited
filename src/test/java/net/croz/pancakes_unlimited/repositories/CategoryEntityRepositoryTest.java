@@ -26,6 +26,7 @@ class CategoryEntityRepositoryTest
     {
         CategoryEntity categoryEntity = categoryRepository.findByName("fil").orElseThrow(NotFoundException::new);
         assertThat(categoryEntity.getName()).isEqualTo("fil");
+
     }
 
 
