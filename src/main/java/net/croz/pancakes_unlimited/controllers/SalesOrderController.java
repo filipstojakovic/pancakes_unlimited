@@ -1,6 +1,7 @@
 package net.croz.pancakes_unlimited.controllers;
 
 import net.croz.pancakes_unlimited.models.entities.SalesOrderEntity;
+import net.croz.pancakes_unlimited.models.requests.SalesOrderRequest;
 import net.croz.pancakes_unlimited.services.SalesOrderService;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,8 +26,8 @@ public class SalesOrderController
     }
 
     @PostMapping
-    public SalesOrderEntity insert(@RequestBody SalesOrderEntity pancake)
+    public SalesOrderEntity insert(@RequestBody SalesOrderRequest request)
     {
-        return salesOrderService.insert(pancake);
+        return salesOrderService.insert(request);
     }
 }

@@ -1,6 +1,7 @@
 package net.croz.pancakes_unlimited.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 
@@ -12,7 +13,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "sales_order")
-@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="orderPancakes")
+//@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="orderPancakes")
 public class SalesOrderEntity
 {
     @Id
@@ -26,6 +27,6 @@ public class SalesOrderEntity
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "pk.salesOrder")
-    private List<OrderHasPancake> orderHasPancakes = new ArrayList<>();
+    @OneToMany(mappedBy = "salesOrder", cascade = CascadeType.ALL)
+    List<OrderHasPancake> orderHasPancakes = new ArrayList<>();
 }
