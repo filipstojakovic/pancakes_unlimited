@@ -1,7 +1,6 @@
 package net.croz.pancakes_unlimited.models.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -20,6 +19,6 @@ public class PancakeEntity
     @OneToMany(mappedBy = "pancake", cascade = CascadeType.ALL)
     private List<PancakeHasIngredient> pancakeIngredients = new ArrayList<>();
 
-    @OneToMany(mappedBy = "pancake", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pancake", cascade = CascadeType.ALL)
     List<OrderHasPancake> orderHasPancakes = new ArrayList<>();
 }

@@ -1,6 +1,7 @@
 package net.croz.pancakes_unlimited.controllers;
 
-import net.croz.pancakes_unlimited.models.entities.PancakeEntity;
+import net.croz.pancakes_unlimited.models.dtos.PancakeDTO;
+import net.croz.pancakes_unlimited.models.requests.PancakeRequest;
 import net.croz.pancakes_unlimited.services.PancakeService;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,14 +19,20 @@ public class PancakeController
     }
 
     @GetMapping
-    public List<PancakeEntity> findAll()
+    public List<PancakeDTO> findAll()
     {
         return pancakeService.findAll();
     }
 
-    @PostMapping
-    public PancakeEntity insert(@RequestBody PancakeEntity pancake)
+    @GetMapping("/{id}")
+    public PancakeDTO findById(@PathVariable Integer id)
     {
-        return pancakeService.insert(pancake);
+        return pancakeService.findById(id);
+    }
+
+    @PostMapping
+    public PancakeDTO insert(@RequestBody PancakeRequest pancakeRequest)
+    {
+        return pancakeService.insert(pancakeRequest);
     }
 }
