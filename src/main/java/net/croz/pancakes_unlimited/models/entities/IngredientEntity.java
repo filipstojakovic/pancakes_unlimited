@@ -29,7 +29,7 @@ public class IngredientEntity
     @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL)
     List<PancakeHasIngredient> pancakeIngredients = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id", nullable = true)
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
     private CategoryEntity ingredientCategory;
 }

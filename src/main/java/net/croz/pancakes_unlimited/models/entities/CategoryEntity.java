@@ -13,7 +13,7 @@ public class CategoryEntity
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id", insertable = false, updatable = false)
     private Integer categoryId;
     @Basic
     @Column(name = "name", unique = true)

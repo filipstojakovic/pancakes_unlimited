@@ -2,7 +2,10 @@ package net.croz.pancakes_unlimited.services.impl;
 
 import net.croz.pancakes_unlimited.exceptions.NotFoundException;
 import net.croz.pancakes_unlimited.models.dtos.IngredientDTO;
+import net.croz.pancakes_unlimited.models.entities.CategoryEntity;
 import net.croz.pancakes_unlimited.models.entities.IngredientEntity;
+import net.croz.pancakes_unlimited.models.requests.IngredientRequest;
+import net.croz.pancakes_unlimited.repositories.CategoryEntityRepository;
 import net.croz.pancakes_unlimited.repositories.IngredientEntityRepository;
 import net.croz.pancakes_unlimited.services.IngredientService;
 import org.modelmapper.ModelMapper;
@@ -12,6 +15,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -21,51 +25,63 @@ public class IngredientServiceImpl implements IngredientService
     @PersistenceContext
     private EntityManager entityManager;
     private final IngredientEntityRepository ingredientRepository;
+    private final CategoryEntityRepository categoryRepository;
 
-    public IngredientServiceImpl(ModelMapper modelMapper, IngredientEntityRepository ingredientRepository)
+    public IngredientServiceImpl(ModelMapper modelMapper, IngredientEntityRepository ingredientRepository, CategoryEntityRepository categoryRepository)
     {
         this.modelMapper = modelMapper;
         this.ingredientRepository = ingredientRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
-    public List<IngredientEntity> findAll()
+    public List<IngredientDTO> findAll()
     {
-        return ingredientRepository.findAll();
+        List<IngredientEntity> ingredientEntityList = ingredientRepository.findAll();
+        return ingredientEntityList.stream()
+                .map(ingredientEntity -> modelMapper.map(ingredientEntity, IngredientDTO.class))
+                .collect(Collectors.toList());
     }
 
-    public IngredientEntity findById(Integer id)
+    public IngredientDTO findById(Integer id)
     {
-        return ingredientRepository.findById(id).orElseThrow(NotFoundException::new);
+        IngredientEntity ingredientEntity = ingredientRepository.findById(id).orElseThrow(NotFoundException::new);
+        return modelMapper.map(ingredientEntity, IngredientDTO.class);
     }
 
     @Override
-    public IngredientEntity insert(IngredientDTO ingredient)
+    public IngredientDTO insert(IngredientRequest ingredient)
     {
+        CategoryEntity categoryEntity = categoryRepository.findByName(ingredient.getCategoryName()).orElseThrow(NotFoundException::new);
+
         IngredientEntity ingredientEntity = modelMapper.map(ingredient, IngredientEntity.class);
         ingredientEntity.setIngredientId(null);
+        ingredientEntity.setIngredientCategory(categoryEntity);
         ingredientEntity = ingredientRepository.saveAndFlush(ingredientEntity);
         entityManager.refresh(ingredientEntity);
-        return findById(ingredientEntity.getIngredientId());
+        return modelMapper.map(ingredientEntity, IngredientDTO.class);
     }
 
     @Override
-    public IngredientEntity update(Integer id, IngredientDTO ingredient)
+    public IngredientDTO update(Integer id, IngredientRequest ingredient)
     {
         if (!ingredientRepository.existsById(id))
             throw new NotFoundException();
 
+        CategoryEntity categoryEntity = categoryRepository.findByName(ingredient.getCategoryName()).orElseThrow(NotFoundException::new);
+
         IngredientEntity ingredientEntity = modelMapper.map(ingredient, IngredientEntity.class);
         ingredientEntity.setIngredientId(id);
+        ingredientEntity.setIngredientCategory(categoryEntity);
         ingredientEntity = ingredientRepository.saveAndFlush(ingredientEntity);
         entityManager.refresh(ingredientEntity);
-        return findById(ingredientEntity.getIngredientId());
+        return modelMapper.map(ingredientEntity, IngredientDTO.class);
     }
 
     @Override
     public void delete(Integer id)
     {
-        if(!ingredientRepository.existsById(id))
+        if (!ingredientRepository.existsById(id))
             throw new NotFoundException();
         ingredientRepository.deleteById(id);
     }
