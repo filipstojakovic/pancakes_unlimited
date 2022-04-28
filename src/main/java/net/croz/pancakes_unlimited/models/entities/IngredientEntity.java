@@ -1,7 +1,6 @@
 package net.croz.pancakes_unlimited.models.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -27,11 +26,10 @@ public class IngredientEntity
     @Column(name = "price")
     private BigDecimal price;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL)
     List<PancakeHasIngredient> pancakeIngredients = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = true)
     private CategoryEntity ingredientCategory;
 }

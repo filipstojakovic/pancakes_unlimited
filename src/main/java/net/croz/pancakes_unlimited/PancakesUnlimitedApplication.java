@@ -41,6 +41,6 @@ public class PancakesUnlimitedApplication
 
     private ApiInfo getApiInfo()
     {
-        return new ApiInfo("Pancakes unlimited", "lets bake some pancakes", "1.0.0", "", null, "", "", new ArrayList<>());
+        return new ApiInfo("Pancakes unlimited", "let's bake some pancakes", "1.0.0", "", null, "", "", new ArrayList<>());
     }
 }

@@ -1,10 +1,11 @@
 package net.croz.pancakes_unlimited.controllers;
 
-import net.croz.pancakes_unlimited.exceptions.BadRequestException;
-import net.croz.pancakes_unlimited.models.entities.CategoryEntity;
+import net.croz.pancakes_unlimited.models.dtos.CategoryDTO;
 import net.croz.pancakes_unlimited.services.CategoryService;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -21,13 +22,13 @@ public class CategoryController
     }
 
     @GetMapping
-    public List<CategoryEntity> findAll()
+    public List<CategoryDTO> findAll()
     {
         return categoryService.findAll();
     }
 
     @GetMapping("/{id}")
-    public CategoryEntity findById(@PathVariable Integer id)
+    public CategoryDTO findById(@PathVariable Integer id)
     {
         return categoryService.findById(id);
     }

@@ -1,7 +1,7 @@
 package net.croz.pancakes_unlimited.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.util.List;
@@ -19,6 +19,8 @@ public class CategoryEntity
     @Column(name = "name", unique = true)
     private String name;
 
+
+    @JsonIgnore
     @OneToMany(mappedBy = "ingredientCategory")
     private List<IngredientEntity> ingredientsById;
 }

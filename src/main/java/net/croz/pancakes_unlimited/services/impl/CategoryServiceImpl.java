@@ -1,34 +1,42 @@
 package net.croz.pancakes_unlimited.services.impl;
 
-import net.croz.pancakes_unlimited.exceptions.BadRequestException;
 import net.croz.pancakes_unlimited.exceptions.NotFoundException;
+import net.croz.pancakes_unlimited.models.dtos.CategoryDTO;
 import net.croz.pancakes_unlimited.models.entities.CategoryEntity;
 import net.croz.pancakes_unlimited.repositories.CategoryEntityRepository;
 import net.croz.pancakes_unlimited.services.CategoryService;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class CategoryServiceImpl implements CategoryService
 {
     private final CategoryEntityRepository categoryRepository;
+    private final ModelMapper modelMapper;
 
-    public CategoryServiceImpl(CategoryEntityRepository categoryRepository)
+    public CategoryServiceImpl(CategoryEntityRepository categoryRepository, ModelMapper modelMapper)
     {
         this.categoryRepository = categoryRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
-    public List<CategoryEntity> findAll()
+    public List<CategoryDTO> findAll()
     {
-        return categoryRepository.findAll();
+        List<CategoryEntity> categoryEntityList = categoryRepository.findAll();
+        return categoryEntityList.stream()
+                .map(x -> modelMapper.map(x, CategoryDTO.class))
+                .collect(Collectors.toList());
     }
 
-    public CategoryEntity findById(Integer id)
+    public CategoryDTO findById(Integer id)
     {
-        return categoryRepository.findById(id).orElseThrow(NotFoundException::new);
+        CategoryEntity categoryEntity = categoryRepository.findById(id).orElseThrow(NotFoundException::new);
+        return modelMapper.map(categoryEntity, CategoryDTO.class);
     }
 }

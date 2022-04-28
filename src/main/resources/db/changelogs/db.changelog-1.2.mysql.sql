@@ -15,3 +15,6 @@ VALUES ('voće');
 ALTER TABLE sales_order
     ADD order_number VARCHAR(255) NOT NULL;
 
+-- changeset filip:17
+ALTER TABLE sales_order
+    MODIFY COLUMN order_number CHAR(36) NOT NULL;

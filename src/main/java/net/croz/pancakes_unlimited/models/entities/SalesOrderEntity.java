@@ -1,8 +1,5 @@
 package net.croz.pancakes_unlimited.models.entities;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -13,7 +10,6 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "sales_order")
-//@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="orderPancakes")
 public class SalesOrderEntity
 {
     @Id
@@ -24,7 +20,7 @@ public class SalesOrderEntity
     private LocalDate orderDate;
     @Column(name = "description")
     private String description;
-    @Column(name="order_number")
+    @Column(name="order_number", length = 36) // UUID.randomUUID() is of length 36
     private String orderNumber;
 
     @OneToMany(mappedBy = "salesOrder", cascade = CascadeType.ALL)
