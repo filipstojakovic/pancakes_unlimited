@@ -6,6 +6,7 @@ import net.croz.pancakes_unlimited.models.entities.IngredientEntity;
 import net.croz.pancakes_unlimited.models.entities.PancakeEntity;
 import net.croz.pancakes_unlimited.models.entities.PancakeHasIngredient;
 import net.croz.pancakes_unlimited.models.requests.PancakeRequest;
+import net.croz.pancakes_unlimited.models.responses.PancakeIngredientResponse;
 import net.croz.pancakes_unlimited.repositories.IngredientEntityRepository;
 import net.croz.pancakes_unlimited.repositories.PancakeEntityRepository;
 import net.croz.pancakes_unlimited.services.PancakeService;
@@ -13,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,16 +39,14 @@ public class PancakeServiceImpl implements PancakeService
     public List<PancakeDTO> findAll()
     {
         List<PancakeEntity> pancakeEntityList = pancakeRepository.findAll();
-        return pancakeEntityList.stream()
-                .map(pancakeEntity -> modelMapper.map(pancakeEntity, PancakeDTO.class))
-                .collect(Collectors.toList());
+        return pancakeEntityList.stream().map(this::mapPancakeEntityToPancakeDTO).collect(Collectors.toList());
     }
 
     @Override
     public PancakeDTO findById(Integer id)
     {
         PancakeEntity pancakeEntity = pancakeRepository.findById(id).orElseThrow(NotFoundException::new);
-        return modelMapper.map(pancakeEntity, PancakeDTO.class);
+        return mapPancakeEntityToPancakeDTO(pancakeEntity);
     }
 
     @Override
@@ -84,5 +84,32 @@ public class PancakeServiceImpl implements PancakeService
             ingredientEntityList.add(ingredientRepository.findByName(ingredientName).orElseThrow(NotFoundException::new));
         }
         return ingredientEntityList;
+    }
+
+    private PancakeDTO mapPancakeEntityToPancakeDTO(PancakeEntity pancake)
+    {
+        List<PancakeIngredientResponse> pancakeIngredientResponses =
+                mapPancakeHasIngredientToPancakeIngredientResponse(pancake.getPancakeIngredients());
+
+        PancakeDTO pancakeDTO = new PancakeDTO();
+        pancakeDTO.setId(pancake.getId());
+        pancakeDTO.setPancakeIngredients(pancakeIngredientResponses);
+        return pancakeDTO;
+    }
+
+    private List<PancakeIngredientResponse> mapPancakeHasIngredientToPancakeIngredientResponse(List<PancakeHasIngredient> pancakeHasIngredients)
+    {
+        return pancakeHasIngredients.stream()
+                .map(pancakeHasIngredient ->
+                    {
+                        IngredientEntity ingredientEntity = pancakeHasIngredient.getIngredient();
+                        BigDecimal price = pancakeHasIngredient.getPrice();
+                        PancakeIngredientResponse pancakeIngredientResponse = new PancakeIngredientResponse();
+                        pancakeIngredientResponse.setIngredientId(ingredientEntity.getIngredientId());
+                        pancakeIngredientResponse.setIngredientName(ingredientEntity.getName());
+                        pancakeIngredientResponse.setPrice(price);
+                        return pancakeIngredientResponse;
+                    })
+                .collect(Collectors.toList());
     }
 }

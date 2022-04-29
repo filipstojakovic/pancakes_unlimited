@@ -1,11 +1,17 @@
 package net.croz.pancakes_unlimited.models.entities;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import net.croz.pancakes_unlimited.models.entities.compositekeys.OrderPancakeKey;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
+@RequiredArgsConstructor
+@EqualsAndHashCode
 @Entity
 @Table(name = "order_has_pancake")
 public class OrderHasPancake
@@ -16,12 +22,12 @@ public class OrderHasPancake
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("pancakeId")
     @JoinColumn(name = "pancake_id")
-    PancakeEntity pancake;
+    private PancakeEntity pancake;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("salesOrderId")
     @JoinColumn(name = "sales_order_id")
-    SalesOrderEntity salesOrder;
+    private SalesOrderEntity salesOrder;
 
     @Column(name = "quantity")
     private Integer quantity;

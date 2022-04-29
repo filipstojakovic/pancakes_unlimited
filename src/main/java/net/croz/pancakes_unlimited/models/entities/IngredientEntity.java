@@ -1,13 +1,14 @@
 package net.croz.pancakes_unlimited.models.entities;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter@Setter
 @Entity
 @Table(name = "ingredient")
 public class IngredientEntity
@@ -26,7 +27,7 @@ public class IngredientEntity
     @Column(name = "price")
     private BigDecimal price;
 
-    @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<PancakeHasIngredient> pancakeIngredients = new ArrayList<>();
 
     @ManyToOne

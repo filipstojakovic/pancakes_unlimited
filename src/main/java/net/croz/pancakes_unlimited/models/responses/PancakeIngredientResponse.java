@@ -1,10 +1,9 @@
-package net.croz.pancakes_unlimited.models.dtos;
+package net.croz.pancakes_unlimited.models.responses;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import net.croz.pancakes_unlimited.models.entities.CategoryEntity;
 
 import java.math.BigDecimal;
 
@@ -12,11 +11,9 @@ import java.math.BigDecimal;
 @Setter
 @RequiredArgsConstructor
 @EqualsAndHashCode
-public class IngredientDTO
+public class PancakeIngredientResponse
 {
     private Integer ingredientId;
-    private String name;
-    private Boolean isHealthy;
+    private String ingredientName;
     private BigDecimal price;
-    private CategoryEntity ingredientCategory;
 }

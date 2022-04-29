@@ -1,13 +1,15 @@
 package net.croz.pancakes_unlimited.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import net.croz.pancakes_unlimited.models.entities.compositekeys.PancakeIngredientKey;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "pancake_has_ingredient")
 public class PancakeHasIngredient
@@ -16,16 +18,16 @@ public class PancakeHasIngredient
     PancakeIngredientKey id = new PancakeIngredientKey();
 
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("pancakeId")
     @JoinColumn(name = "pancake_id")
-    PancakeEntity pancake;
+    private PancakeEntity pancake;
 
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("ingredientId")
     @JoinColumn(name = "ingredient_id")
-    IngredientEntity ingredient;
+    private IngredientEntity ingredient;
 
     @Column(name = "price")
     private BigDecimal price;

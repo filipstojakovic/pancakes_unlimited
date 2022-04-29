@@ -40,3 +40,4 @@ build/
 /pancake_unlimited.log
 /logs/
 /mysql_docker/mysql.env
+/src/main/resources/users-encoded.json

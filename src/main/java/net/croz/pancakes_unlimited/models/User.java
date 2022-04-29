@@ -1,14 +1,14 @@
 package net.croz.pancakes_unlimited.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import net.croz.pancakes_unlimited.models.enums.Role;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
 public class User

@@ -1,12 +1,16 @@
 package net.croz.pancakes_unlimited.security.models;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@RequiredArgsConstructor
+@EqualsAndHashCode
 public class AuthorizationRules
 {
     private List<Rule> rules;

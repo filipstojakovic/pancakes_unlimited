@@ -1,12 +1,19 @@
 package net.croz.pancakes_unlimited.models.entities.compositekeys;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
-@Data
+
+@Getter
+@Setter
+@RequiredArgsConstructor
+@EqualsAndHashCode
 @Embeddable
 public class PancakeIngredientKey implements Serializable
 {

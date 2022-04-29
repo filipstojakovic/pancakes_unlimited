@@ -32,10 +32,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
         var inMemoryAuth = auth.inMemoryAuthentication();
         users.forEach(user ->
             {
-                String encodedPassword = passwordEncoder.encode(user.getPassword());
+//                String encodedPassword = passwordEncoder.encode(user.getPassword());
                 inMemoryAuth
                         .withUser(user.getUsername())
-                        .password(encodedPassword)  //.password("{noop}secret") If, for any reason, we don't want to encode the configured password
+                        .password(user.getPassword())
+//                        .password(encodedPassword)  //.password("{noop}secret") If, for any reason, we don't want to encode the configured password
                         .roles(user.getRole().name());
             });
     }
