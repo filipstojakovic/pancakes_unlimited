@@ -34,6 +34,7 @@ public class CategoryServiceImpl implements CategoryService
                 .collect(Collectors.toList());
     }
 
+    @Override
     public CategoryDTO findById(Integer id)
     {
         CategoryEntity categoryEntity = categoryRepository.findById(id).orElseThrow(NotFoundException::new);
