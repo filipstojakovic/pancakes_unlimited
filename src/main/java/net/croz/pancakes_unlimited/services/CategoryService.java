@@ -1,12 +1,8 @@
 package net.croz.pancakes_unlimited.services;
 
 import net.croz.pancakes_unlimited.models.dtos.CategoryDTO;
+import net.croz.pancakes_unlimited.services.interfaces.IFindService;
 
-import java.util.List;
-
-public interface CategoryService
+public interface CategoryService extends IFindService<Integer,CategoryDTO>
 {
-    List<CategoryDTO> findAll();
-
-    CategoryDTO findById(Integer id);
 }

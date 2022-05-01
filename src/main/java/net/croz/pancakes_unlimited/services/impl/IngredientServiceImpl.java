@@ -43,6 +43,7 @@ public class IngredientServiceImpl implements IngredientService
                 .collect(Collectors.toList());
     }
 
+    @Override
     public IngredientDTO findById(Integer id)
     {
         IngredientEntity ingredientEntity = ingredientRepository.findById(id).orElseThrow(NotFoundException::new);

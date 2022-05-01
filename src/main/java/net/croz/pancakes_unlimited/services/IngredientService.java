@@ -2,18 +2,8 @@ package net.croz.pancakes_unlimited.services;
 
 import net.croz.pancakes_unlimited.models.dtos.IngredientDTO;
 import net.croz.pancakes_unlimited.models.requests.IngredientRequest;
+import net.croz.pancakes_unlimited.services.interfaces.ICrudService;
 
-import java.util.List;
-
-public interface IngredientService
+public interface IngredientService extends ICrudService<Integer, IngredientRequest, IngredientDTO>
 {
-    List<IngredientDTO> findAll();
-
-    IngredientDTO findById(Integer id);
-
-    IngredientDTO insert(IngredientRequest ingredient);
-
-    IngredientDTO update(Integer id, IngredientRequest ingredient);
-
-    void delete(Integer id);
 }
