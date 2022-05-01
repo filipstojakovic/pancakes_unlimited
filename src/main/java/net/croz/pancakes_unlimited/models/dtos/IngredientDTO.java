@@ -4,7 +4,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import net.croz.pancakes_unlimited.models.entities.CategoryEntity;
 
 import java.math.BigDecimal;
 
@@ -18,5 +17,5 @@ public class IngredientDTO
     private String name;
     private Boolean isHealthy;
     private BigDecimal price;
-    private CategoryEntity ingredientCategory;
+    private CategoryDTO ingredientCategory;
 }

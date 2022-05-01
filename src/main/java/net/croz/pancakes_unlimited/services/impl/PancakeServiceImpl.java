@@ -1,5 +1,6 @@
 package net.croz.pancakes_unlimited.services.impl;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import net.croz.pancakes_unlimited.exceptions.NotFoundException;
 import net.croz.pancakes_unlimited.models.dtos.CategoryDTO;
 import net.croz.pancakes_unlimited.models.dtos.PancakeDTO;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class PancakeServiceImpl implements PancakeService
 {
     private final PancakeEntityRepository pancakeRepository;
@@ -76,12 +78,10 @@ public class PancakeServiceImpl implements PancakeService
     }
 
     @Override
-    @Transactional
     public PancakeDTO update(Integer id, PancakeRequest pancakeRequest)
     {
         if (!pancakeRepository.existsById(id))
             throw new NotFoundException();
-
 
         List<IngredientEntity> ingredientEntityList = getIngredientEntitiesByNames(pancakeRequest.getIngredientNames());
         PancakeEntity newPancake = pancakeRepository.findById(id).orElseThrow(NotFoundException::new);
@@ -98,12 +98,12 @@ public class PancakeServiceImpl implements PancakeService
         return mapPancakeEntityToPancakeDTO(newPancake);
     }
 
-    private List<PancakeHasIngredient> createPancakeHasIngredients(List<IngredientEntity> ingredientEntityList, PancakeEntity finalNewPancake)
+    private List<PancakeHasIngredient> createPancakeHasIngredients(List<IngredientEntity> ingredientEntityList, PancakeEntity pancake)
     {
         return ingredientEntityList.stream().map(ingredientEntity ->
             {
                 PancakeHasIngredient pancakeHasIngredient = new PancakeHasIngredient();
-                pancakeHasIngredient.setPancake(finalNewPancake);
+                pancakeHasIngredient.setPancake(pancake);
                 pancakeHasIngredient.setIngredient(ingredientEntity);
                 pancakeHasIngredient.setPrice(ingredientEntity.getPrice());
                 return pancakeHasIngredient;

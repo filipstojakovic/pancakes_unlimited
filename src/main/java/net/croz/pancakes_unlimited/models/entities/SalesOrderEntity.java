@@ -26,7 +26,7 @@ public class SalesOrderEntity
     private Date orderDate;
     @Column(name = "description")
     private String description;
-    @Column(name="order_number", length = 36,columnDefinition = "char") // UUID.randomUUID() is of length 36
+    @Column(name = "order_number", length = 36, columnDefinition = "char") // UUID.randomUUID() is of length 36
     private String orderNumber;
 
     @OneToMany(mappedBy = "salesOrder", cascade = CascadeType.ALL)
