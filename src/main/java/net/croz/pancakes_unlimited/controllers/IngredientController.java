@@ -33,12 +33,14 @@ public class IngredientController
     }
 
     @PutMapping("/{id}")
-    public IngredientDTO update(@PathVariable Integer id,@Valid @RequestBody IngredientRequest ingredientDTO)
+    public IngredientDTO update(@PathVariable Integer id, @Valid @RequestBody IngredientRequest ingredientDTO)
     {
         return ingredientService.update(id, ingredientDTO);
     }
+
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Integer id) {
+    public void delete(@PathVariable Integer id)
+    {
         ingredientService.delete(id);
     }
 }

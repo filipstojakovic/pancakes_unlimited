@@ -54,6 +54,7 @@ public class IngredientServiceImpl implements IngredientService
     {
         CategoryEntity categoryEntity = categoryRepository.findByName(ingredient.getCategoryName()).orElseThrow(NotFoundException::new);
 
+        //TODO: maybe set (ingredientName + categoryName) unique
         IngredientEntity ingredientEntity = modelMapper.map(ingredient, IngredientEntity.class);
         ingredientEntity.setIngredientId(null);
         ingredientEntity.setIngredientCategory(categoryEntity);
@@ -69,8 +70,8 @@ public class IngredientServiceImpl implements IngredientService
             throw new NotFoundException();
 
         CategoryEntity categoryEntity = categoryRepository.findByName(ingredient.getCategoryName()).orElseThrow(NotFoundException::new);
-
         IngredientEntity ingredientEntity = modelMapper.map(ingredient, IngredientEntity.class);
+
         ingredientEntity.setIngredientId(id);
         ingredientEntity.setIngredientCategory(categoryEntity);
         ingredientEntity = ingredientRepository.saveAndFlush(ingredientEntity);

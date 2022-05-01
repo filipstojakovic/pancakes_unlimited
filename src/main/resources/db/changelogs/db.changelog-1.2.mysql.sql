@@ -18,3 +18,7 @@ ALTER TABLE sales_order
 -- changeset filip:17
 ALTER TABLE sales_order
     MODIFY COLUMN order_number CHAR(36) NOT NULL;
+
+-- changeset filip:18
+ALTER TABLE ingredient
+    MODIFY COLUMN is_healthy BIT(1) NOT NULL;

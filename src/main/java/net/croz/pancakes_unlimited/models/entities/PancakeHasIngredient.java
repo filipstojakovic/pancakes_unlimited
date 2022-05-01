@@ -1,6 +1,7 @@
 package net.croz.pancakes_unlimited.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import net.croz.pancakes_unlimited.models.entities.compositekeys.PancakeIngredientKey;
@@ -8,24 +9,23 @@ import net.croz.pancakes_unlimited.models.entities.compositekeys.PancakeIngredie
 import javax.persistence.*;
 import java.math.BigDecimal;
 
+@Entity
 @Getter
 @Setter
-@Entity
+@EqualsAndHashCode
+@IdClass(PancakeIngredientKey.class)
 @Table(name = "pancake_has_ingredient")
 public class PancakeHasIngredient
 {
-    @EmbeddedId
-    PancakeIngredientKey id = new PancakeIngredientKey();
-
     @JsonIgnore
+    @Id
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("pancakeId")
     @JoinColumn(name = "pancake_id")
     private PancakeEntity pancake;
 
     @JsonIgnore
+    @Id
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("ingredientId")
     @JoinColumn(name = "ingredient_id")
     private IngredientEntity ingredient;
 

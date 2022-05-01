@@ -22,9 +22,9 @@ public class PancakeEntity
     @Column(name = "id")
     private Integer id;
 
-    @OneToMany(mappedBy = "pancake", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "pancake", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<PancakeHasIngredient> pancakeIngredients = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pancake", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "pancake")
     List<OrderHasPancake> orderHasPancakes = new ArrayList<>();
 }

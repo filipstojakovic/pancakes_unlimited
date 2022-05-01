@@ -11,4 +11,8 @@ public interface PancakeService
 
     PancakeDTO findById(Integer id);
     PancakeDTO insert(PancakeRequest pancakeRequest);
+
+    PancakeDTO update(Integer id, PancakeRequest ingredientDTO);
+
+    void delete(Integer id);
 }

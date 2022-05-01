@@ -19,6 +19,7 @@ public class SalesOrderController
     }
 
 
+    //TODO: create and findByOrderNumber only requested
     @GetMapping
     public List<SalesOrderEntity> findAll()
     {

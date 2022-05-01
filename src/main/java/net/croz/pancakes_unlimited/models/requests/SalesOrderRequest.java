@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
@@ -15,7 +14,6 @@ import java.util.List;
 @EqualsAndHashCode
 public class SalesOrderRequest
 {
-    @NotNull
     private String description;
     @Valid
     private List<PancakeRequest> orderedPancakes;

@@ -1,7 +1,9 @@
 package net.croz.pancakes_unlimited.services.impl;
 
 import net.croz.pancakes_unlimited.exceptions.NotFoundException;
+import net.croz.pancakes_unlimited.models.dtos.CategoryDTO;
 import net.croz.pancakes_unlimited.models.dtos.PancakeDTO;
+import net.croz.pancakes_unlimited.models.entities.CategoryEntity;
 import net.croz.pancakes_unlimited.models.entities.IngredientEntity;
 import net.croz.pancakes_unlimited.models.entities.PancakeEntity;
 import net.croz.pancakes_unlimited.models.entities.PancakeHasIngredient;
@@ -13,6 +15,8 @@ import net.croz.pancakes_unlimited.services.PancakeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -25,10 +29,14 @@ public class PancakeServiceImpl implements PancakeService
 {
     private final PancakeEntityRepository pancakeRepository;
     private final IngredientEntityRepository ingredientRepository;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     private final ModelMapper modelMapper;
 
-    public PancakeServiceImpl(PancakeEntityRepository pancakeRepository, IngredientEntityRepository ingredientRepository, ModelMapper modelMapper)
+    public PancakeServiceImpl(PancakeEntityRepository pancakeRepository,
+                              IngredientEntityRepository ingredientRepository,
+                              ModelMapper modelMapper)
     {
         this.pancakeRepository = pancakeRepository;
         this.ingredientRepository = ingredientRepository;
@@ -49,39 +57,73 @@ public class PancakeServiceImpl implements PancakeService
         return mapPancakeEntityToPancakeDTO(pancakeEntity);
     }
 
+
+    // merging same  (making distinct) ingredients
     @Override
     public PancakeDTO insert(PancakeRequest pancakeRequest)
     {
-        //        //TODO: check for base and fil
-        List<IngredientEntity> ingredientEntityList = getIngredientEntitiesByNames(pancakeRequest);
-        //        TODO: merge same ingredients
+        List<IngredientEntity> ingredientEntityList = getIngredientEntitiesByNames(pancakeRequest.getIngredientNames());
+        ingredientEntityList = ingredientEntityList.stream().distinct().collect(Collectors.toList());
 
         PancakeEntity newPancake = new PancakeEntity();
-        PancakeEntity finalNewPancake = newPancake;
-        List<PancakeHasIngredient> pancakeHasIngredients = ingredientEntityList.stream()
-                .map(ingredient ->
-                    {
-                        PancakeHasIngredient newPancakeHasIngredient = new PancakeHasIngredient();
-
-                        newPancakeHasIngredient.setPancake(finalNewPancake);
-                        newPancakeHasIngredient.setIngredient(ingredient);
-                        newPancakeHasIngredient.setPrice(ingredient.getPrice());
-
-                        return newPancakeHasIngredient;
-                    }).collect(Collectors.toList());
+        PancakeEntity finalNewPancake = newPancake; // Variable used in lambda expression should be final or effectively final
+        List<PancakeHasIngredient> pancakeHasIngredients = createPancakeHasIngredients(ingredientEntityList, finalNewPancake);
 
         newPancake.setPancakeIngredients(pancakeHasIngredients);
-        newPancake = pancakeRepository.saveAndFlush(finalNewPancake);
-        return modelMapper.map(newPancake, PancakeDTO.class);
+        newPancake = pancakeRepository.saveAndFlush(newPancake);
+        entityManager.refresh(newPancake);
+        return mapPancakeEntityToPancakeDTO(newPancake);
     }
 
-    private List<IngredientEntity> getIngredientEntitiesByNames(PancakeRequest pancakeRequest)
+    @Override
+    @Transactional
+    public PancakeDTO update(Integer id, PancakeRequest pancakeRequest)
+    {
+        if (!pancakeRepository.existsById(id))
+            throw new NotFoundException();
+
+
+        List<IngredientEntity> ingredientEntityList = getIngredientEntitiesByNames(pancakeRequest.getIngredientNames());
+        PancakeEntity newPancake = pancakeRepository.findById(id).orElseThrow(NotFoundException::new);
+
+        var newPancakeHasIngredient = createPancakeHasIngredients(ingredientEntityList, newPancake);
+
+        newPancake.setId(id);
+        newPancake.getPancakeIngredients().clear();
+        newPancake.getPancakeIngredients().addAll(newPancakeHasIngredient);
+
+        newPancake = pancakeRepository.saveAndFlush(newPancake);
+        entityManager.refresh(newPancake);
+
+        return mapPancakeEntityToPancakeDTO(newPancake);
+    }
+
+    private List<PancakeHasIngredient> createPancakeHasIngredients(List<IngredientEntity> ingredientEntityList, PancakeEntity finalNewPancake)
+    {
+        return ingredientEntityList.stream().map(ingredientEntity ->
+            {
+                PancakeHasIngredient pancakeHasIngredient = new PancakeHasIngredient();
+                pancakeHasIngredient.setPancake(finalNewPancake);
+                pancakeHasIngredient.setIngredient(ingredientEntity);
+                pancakeHasIngredient.setPrice(ingredientEntity.getPrice());
+                return pancakeHasIngredient;
+            }).collect(Collectors.toList());
+    }
+
+    @Override
+    public void delete(Integer id)
+    {
+        if (!pancakeRepository.existsById(id))
+            throw new NotFoundException();
+        pancakeRepository.deleteById(id);
+    }
+
+    private List<IngredientEntity> getIngredientEntitiesByNames(List<String> ingredientsName)
     {
         List<IngredientEntity> ingredientEntityList = new ArrayList<>();
-        List<String> ingredientsName = pancakeRequest.getIngredientNames();
         for (String ingredientName : ingredientsName)
         {
-            ingredientEntityList.add(ingredientRepository.findByName(ingredientName).orElseThrow(NotFoundException::new));
+            ingredientEntityList.add(ingredientRepository.findByName(ingredientName).orElseThrow(() -> new NotFoundException("\"" + ingredientName + "\" ingredient does not exist")));
         }
         return ingredientEntityList;
     }
@@ -108,6 +150,10 @@ public class PancakeServiceImpl implements PancakeService
                         pancakeIngredientResponse.setIngredientId(ingredientEntity.getIngredientId());
                         pancakeIngredientResponse.setIngredientName(ingredientEntity.getName());
                         pancakeIngredientResponse.setPrice(price);
+
+                        CategoryEntity categoryEntity = ingredientEntity.getIngredientCategory();
+                        pancakeIngredientResponse.setIngredientCategory(modelMapper.map(categoryEntity, CategoryDTO.class));
+
                         return pancakeIngredientResponse;
                     })
                 .collect(Collectors.toList());
