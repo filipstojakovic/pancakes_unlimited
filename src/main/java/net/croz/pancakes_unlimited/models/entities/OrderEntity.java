@@ -16,7 +16,7 @@ import java.util.List;
 @EqualsAndHashCode
 @Entity
 @Table(name = "sales_order")
-public class SalesOrderEntity
+public class OrderEntity
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +29,6 @@ public class SalesOrderEntity
     @Column(name = "order_number", length = 36, columnDefinition = "char") // UUID.randomUUID() is of length 36
     private String orderNumber;
 
-    @OneToMany(mappedBy = "salesOrder", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     List<OrderHasPancake> orderHasPancakes = new ArrayList<>();
 }

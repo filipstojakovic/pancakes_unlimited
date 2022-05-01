@@ -34,7 +34,7 @@ public class PancakeController
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public PancakeDTO insert(@RequestBody PancakeRequest pancakeRequest)
+    public PancakeDTO insert(@Valid @RequestBody PancakeRequest pancakeRequest)
     {
         return pancakeService.insert(pancakeRequest);
     }

@@ -36,4 +36,15 @@ ALTER TABLE pancake_has_ingredient
 ALTER TABLE pancake_has_ingredient
     ADD CONSTRAINT fk_pancake_has_ingredient_pancake FOREIGN KEY (pancake_id) REFERENCES pancake (id) ON DELETE CASCADE;
 
+-- changeset filip:20
+ALTER TABLE order_has_pancake
+    DROP FOREIGN KEY fk_oder_has_pancake_sales_order;
 
+ALTER TABLE order_has_pancake
+    ADD CONSTRAINT fk_oder_has_pancake_sales_order FOREIGN KEY (sales_order_id) REFERENCES sales_order (id) ON DELETE CASCADE;;
+
+ALTER TABLE order_has_pancake
+    DROP FOREIGN KEY fk_oder_has_pancake_pancake;
+
+ALTER TABLE order_has_pancake
+    ADD CONSTRAINT fk_oder_has_pancake_pancake FOREIGN KEY (pancake_id) REFERENCES pancake (id) ON DELETE CASCADE;

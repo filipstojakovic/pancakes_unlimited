@@ -24,7 +24,4 @@ public class PancakeEntity
 
     @OneToMany(mappedBy = "pancake", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<PancakeHasIngredient> pancakeIngredients = new ArrayList<>();
-
-    @OneToMany(mappedBy = "pancake")
-    List<OrderHasPancake> orderHasPancakes = new ArrayList<>();
 }

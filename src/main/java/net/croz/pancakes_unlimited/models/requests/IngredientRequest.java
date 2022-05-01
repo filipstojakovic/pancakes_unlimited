@@ -1,19 +1,13 @@
 package net.croz.pancakes_unlimited.models.requests;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
-@Getter
-@Setter
-@RequiredArgsConstructor
-@EqualsAndHashCode
+@Data
 public class IngredientRequest
 {
     @NotBlank
