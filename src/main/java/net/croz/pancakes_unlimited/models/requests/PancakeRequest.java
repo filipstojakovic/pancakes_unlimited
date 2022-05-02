@@ -9,5 +9,5 @@ import java.util.List;
 public class PancakeRequest
 {
     @NotEmpty
-    List<String> ingredientNames;
+    List<Integer> ingredientsId;
 }

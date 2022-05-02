@@ -48,6 +48,3 @@ ALTER TABLE order_has_pancake
 
 ALTER TABLE order_has_pancake
     ADD CONSTRAINT fk_oder_has_pancake_pancake FOREIGN KEY (pancake_id) REFERENCES pancake (id) ON DELETE CASCADE;
-
--- changeset filip:21
-SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));

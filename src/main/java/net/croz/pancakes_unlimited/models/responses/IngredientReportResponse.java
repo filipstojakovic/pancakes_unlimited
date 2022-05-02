@@ -7,7 +7,7 @@ import java.math.BigInteger;
 @Data
 public class IngredientReportResponse
 {
-    private Integer id;
+    private Integer ingredientId;
     private String name;
     private Boolean isHealthy;
     private BigInteger orderedTimes;

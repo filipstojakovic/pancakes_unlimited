@@ -30,7 +30,7 @@ public class CategoryServiceImpl implements CategoryService
     {
         List<CategoryEntity> categoryEntityList = categoryRepository.findAll();
         return categoryEntityList.stream()
-                .map(x -> modelMapper.map(x, CategoryDTO.class))
+                .map(categoryEntity -> modelMapper.map(categoryEntity, CategoryDTO.class))
                 .collect(Collectors.toList());
     }
 

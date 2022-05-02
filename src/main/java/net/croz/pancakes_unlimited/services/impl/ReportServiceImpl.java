@@ -51,7 +51,7 @@ public class ReportServiceImpl implements ReportService
         return sqlReportResult.stream().map(result ->
             {
                 IngredientReportResponse response = new IngredientReportResponse();
-                response.setId((Integer) result[ID_POSITION]);
+                response.setIngredientId((Integer) result[ID_POSITION]);
                 response.setName((String) result[NAME_POSITION]);
                 response.setIsHealthy((Boolean) result[IS_HEALTHY_POSITION]);
                 response.setOrderedTimes(((BigDecimal) result[ORDERED_TIMES_POSITION]).toBigInteger());

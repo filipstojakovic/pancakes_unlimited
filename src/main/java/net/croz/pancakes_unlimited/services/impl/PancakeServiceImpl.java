@@ -64,7 +64,7 @@ public class PancakeServiceImpl implements PancakeService
     @Override
     public PancakeDTO insert(PancakeRequest pancakeRequest)
     {
-        List<IngredientEntity> ingredientEntityList = getIngredientEntitiesByNames(pancakeRequest.getIngredientNames());
+        List<IngredientEntity> ingredientEntityList = getIngredientEntitiesByIds(pancakeRequest.getIngredientsId());
         ingredientEntityList = ingredientEntityList.stream().distinct().collect(Collectors.toList());
 
         PancakeEntity newPancake = new PancakeEntity();
@@ -83,7 +83,7 @@ public class PancakeServiceImpl implements PancakeService
         if (!pancakeRepository.existsById(id))
             throw new NotFoundException();
 
-        List<IngredientEntity> ingredientEntityList = getIngredientEntitiesByNames(pancakeRequest.getIngredientNames());
+        List<IngredientEntity> ingredientEntityList = getIngredientEntitiesByIds(pancakeRequest.getIngredientsId());
         PancakeEntity newPancake = pancakeRepository.findById(id).orElseThrow(NotFoundException::new);
 
         var newPancakeHasIngredient = createPancakeHasIngredients(ingredientEntityList, newPancake);
@@ -98,6 +98,14 @@ public class PancakeServiceImpl implements PancakeService
         return mapPancakeEntityToPancakeDTO(newPancake);
     }
 
+    @Override
+    public void delete(Integer id)
+    {
+        if (!pancakeRepository.existsById(id))
+            throw new NotFoundException();
+        pancakeRepository.deleteById(id);
+    }
+
     private List<PancakeHasIngredient> createPancakeHasIngredients(List<IngredientEntity> ingredientEntityList, PancakeEntity pancake)
     {
         return ingredientEntityList.stream().map(ingredientEntity ->
@@ -110,20 +118,12 @@ public class PancakeServiceImpl implements PancakeService
             }).collect(Collectors.toList());
     }
 
-    @Override
-    public void delete(Integer id)
-    {
-        if (!pancakeRepository.existsById(id))
-            throw new NotFoundException();
-        pancakeRepository.deleteById(id);
-    }
-
-    private List<IngredientEntity> getIngredientEntitiesByNames(List<String> ingredientsName)
+    private List<IngredientEntity> getIngredientEntitiesByIds(List<Integer> ingredientsId)
     {
         List<IngredientEntity> ingredientEntityList = new ArrayList<>();
-        for (String ingredientName : ingredientsName)
+        for (Integer ingredientId : ingredientsId)
         {
-            ingredientEntityList.add(ingredientRepository.findByName(ingredientName).orElseThrow(() -> new NotFoundException("\"" + ingredientName + "\" ingredient does not exist")));
+            ingredientEntityList.add(ingredientRepository.findById(ingredientId).orElseThrow(() -> new NotFoundException("ingredient with id \"" + ingredientId + "\" does not exist")));
         }
         return ingredientEntityList;
     }

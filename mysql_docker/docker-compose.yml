@@ -10,6 +10,8 @@ services:
       - "3308:3306"
     env_file:
       - ./mysql.env
+    cap_add:
+      - SYS_NICE  # CAP_SYS_NICE
 #    volumes:
 #      - mysql_db:/var/lib/mysql
 
