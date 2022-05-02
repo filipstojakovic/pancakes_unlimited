@@ -21,12 +21,20 @@ import java.util.List;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 {
-    //    setting up Authentication
+    /**
+     * Setting up Authentication by using users.json file.
+     * File users.json is a json file containing array of users with following attributes:
+     * "username" user's username
+     * "password" encoded password
+     * "role" user's role (CUSTOMER, EMPLOYEE, STORE_OWNER)
+     *
+     * @param auth used to set in memory authentication and to add authorized users
+     * @throws Exception  if file users.json is not found
+     */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception
     {
         AuthorizedUsers authorizedUsers = JsonParserUtil.getObjectFromJson("users.json", AuthorizedUsers.class);
-        PasswordEncoder passwordEncoder = passwordEncoder();
         List<User> users = authorizedUsers.getUsers();
 
         var inMemoryAuth = auth.inMemoryAuthentication();
@@ -35,13 +43,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 //                String encodedPassword = passwordEncoder.encode(user.getPassword());
                 inMemoryAuth
                         .withUser(user.getUsername())
-                        .password(user.getPassword())
-//                        .password(encodedPassword)  //.password("{noop}secret") If, for any reason, we don't want to encode the configured password
+                        .password(user.getPassword()) //.password("{noop}secret") If, for any reason, we don't want to encode the configured password
                         .roles(user.getRole().name());
             });
     }
 
-    //    setting up Authorization
+    /**
+     * Setting up authorization by using rules.json file and denying all other requests.
+     * File rules.json is a json file containing authorization rules for each end-point.
+     * Each json object in file contains following attributes:
+     * "methods" array of method types (such as GET, POST, PUT, DELETE,...). If left empty then allow method types are allowed.
+     * "pattern" end-point that we want to secure
+     * "role" array of user roles that will have access
+     *
+     * @param http used for setting authorization
+     * @throws Exception if file rules.json is not found
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception
     {

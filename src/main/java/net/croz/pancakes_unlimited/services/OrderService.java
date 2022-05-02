@@ -7,4 +7,5 @@ import net.croz.pancakes_unlimited.services.interfaces.IInsertService;
 
 public interface OrderService extends IFindService<Integer,OrderDTO>, IInsertService<OrderRequest,OrderDTO>
 {
+    OrderDTO findByOrderNumber(String orderNumber);
 }

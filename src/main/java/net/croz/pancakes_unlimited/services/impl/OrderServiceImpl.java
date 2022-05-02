@@ -58,8 +58,9 @@ public class OrderServiceImpl implements OrderService
         //TODO: check if pancake is valid
         //TODO: check discount
 
+        String desctiption = orderRequest.getDescription() == null ? "" : orderRequest.getDescription();
         OrderEntity newOrderEntity = new OrderEntity();
-        newOrderEntity.setDescription(orderRequest.getDescription());
+        newOrderEntity.setDescription(desctiption);
 
         OrderEntity finalNewOrderEntity = newOrderEntity;
         List<OrderHasPancake> orderedPancakes = orderRequest.getOrderedPancakes().stream()
@@ -88,6 +89,14 @@ public class OrderServiceImpl implements OrderService
 
     private OrderDTO mapToOrderDTO(OrderEntity orderEntity)
     {
-        return modelMapper.map(orderEntity,OrderDTO.class);
+        return modelMapper.map(orderEntity, OrderDTO.class);
+    }
+
+    @Override
+    public OrderDTO findByOrderNumber(String orderNumber)
+    {
+        OrderEntity orderEntity = orderRepository.findOrderEntityByOrderNumber(orderNumber)
+                .orElseThrow(NotFoundException::new);
+        return mapToOrderDTO(orderEntity);
     }
 }

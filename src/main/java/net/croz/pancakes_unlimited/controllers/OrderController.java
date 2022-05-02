@@ -5,7 +5,9 @@ import net.croz.pancakes_unlimited.controllers.interfaces.IInsertController;
 import net.croz.pancakes_unlimited.models.dtos.OrderDTO;
 import net.croz.pancakes_unlimited.models.requests.OrderRequest;
 import net.croz.pancakes_unlimited.services.OrderService;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -27,14 +29,17 @@ public class OrderController implements IFindController<Integer, OrderDTO>, IIns
         return orderService.findById(id);
     }
 
-    //TODO: create and find and findByOrderNumber only requested
-
     @Override
     public List<OrderDTO> findAll()
     {
         return orderService.findAll();
     }
 
+    @GetMapping(params = "orderNumber")
+    OrderDTO orderNumber(@RequestParam String orderNumber)
+    {
+        return orderService.findByOrderNumber(orderNumber);
+    }
 
     @Override
     public OrderDTO insert(OrderRequest request)

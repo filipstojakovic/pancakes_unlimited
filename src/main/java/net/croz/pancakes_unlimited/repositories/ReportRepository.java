@@ -1,10 +1,13 @@
 package net.croz.pancakes_unlimited.repositories;
 
-import net.croz.pancakes_unlimited.models.entities.CategoryEntity;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface ReportRepository
 {
-    public List<CategoryEntity> getCategories();
+    List<Object[]> getMostOrderedIngredientsLast30Days();
+
+    List<Object[]> getMostHealthyOrderedIngredientsLast30Days();
 }
