@@ -1,7 +1,6 @@
 package net.croz.pancakes_unlimited.models.dtos;
 
 import lombok.Data;
-import net.croz.pancakes_unlimited.models.responses.OrderedPancakeResponse;
 
 import java.util.Date;
 import java.util.List;
@@ -13,6 +12,5 @@ public class OrderDTO
     private Date orderDate;
     private String description;
     private String orderNumber;
-
-    List<OrderedPancakeResponse> orderHasPancakes;
+    List<Integer> pancakeIds;
 }

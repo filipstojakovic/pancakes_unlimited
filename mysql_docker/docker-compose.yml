@@ -12,8 +12,8 @@ services:
       - ./mysql.env
     cap_add:
       - SYS_NICE  # CAP_SYS_NICE
-#    volumes:
-#      - mysql_db:/var/lib/mysql
+    volumes:
+      - mysql_db:/var/lib/mysql
 
-#volumes:
-#  mysql_db:
+volumes:
+  mysql_db:

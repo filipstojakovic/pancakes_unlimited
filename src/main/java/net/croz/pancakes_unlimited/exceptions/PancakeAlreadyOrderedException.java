@@ -2,14 +2,14 @@ package net.croz.pancakes_unlimited.exceptions;
 
 import org.springframework.http.HttpStatus;
 
-public class PancakeNotValidException extends HttpException
+public class PancakeAlreadyOrderedException  extends HttpException
 {
-    public PancakeNotValidException()
+    public PancakeAlreadyOrderedException()
     {
         super(HttpStatus.BAD_REQUEST, null);
     }
 
-    public PancakeNotValidException(Object data)
+    public PancakeAlreadyOrderedException(Object data)
     {
         super(HttpStatus.BAD_REQUEST, data);
     }

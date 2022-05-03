@@ -2,16 +2,16 @@ package net.croz.pancakes_unlimited.models.requests;
 
 import lombok.Data;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
-import java.util.List;
+import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Data
 public class OrderRequest
 {
     private String description;
 
-    @Valid
+    @NotNull
     @NotEmpty
-    private List<PancakeQuantityRequest> orderedPancakes;
+    private Set<Integer> pancakeIds;
 }

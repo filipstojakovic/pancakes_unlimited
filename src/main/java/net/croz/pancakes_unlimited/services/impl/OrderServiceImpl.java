@@ -1,14 +1,15 @@
 package net.croz.pancakes_unlimited.services.impl;
 
 import net.croz.pancakes_unlimited.exceptions.NotFoundException;
+import net.croz.pancakes_unlimited.exceptions.PancakeAlreadyOrderedException;
 import net.croz.pancakes_unlimited.models.dtos.OrderDTO;
 import net.croz.pancakes_unlimited.models.entities.OrderEntity;
-import net.croz.pancakes_unlimited.models.entities.OrderHasPancake;
 import net.croz.pancakes_unlimited.models.entities.PancakeEntity;
 import net.croz.pancakes_unlimited.models.requests.OrderRequest;
 import net.croz.pancakes_unlimited.repositories.OrderEntityRepository;
 import net.croz.pancakes_unlimited.repositories.PancakeEntityRepository;
 import net.croz.pancakes_unlimited.services.OrderService;
+import net.croz.pancakes_unlimited.utils.MapUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -42,58 +43,57 @@ public class OrderServiceImpl implements OrderService
     @Override
     public List<OrderDTO> findAll()
     {
-        return orderRepository.findAll().stream().map(this::mapToOrderDTO).collect(Collectors.toList());
+        return orderRepository.findAll().stream()
+                .map(x -> MapUtils.mapToOrderDTO(x, modelMapper))
+                .collect(Collectors.toList());
     }
 
     @Override
     public OrderDTO findById(Integer id)
     {
         OrderEntity orderEntity = orderRepository.findById(id).orElseThrow(NotFoundException::new);
-        return mapToOrderDTO(orderEntity);
+        return MapUtils.mapToOrderDTO(orderEntity, modelMapper);
     }
 
     @Override
     public OrderDTO insert(OrderRequest orderRequest)
     {
-        //TODO: check if pancake is valid
         //TODO: check discount
 
-        String desctiption = orderRequest.getDescription() == null ? "" : orderRequest.getDescription();
         OrderEntity newOrderEntity = new OrderEntity();
-        newOrderEntity.setDescription(desctiption);
 
-        List<OrderHasPancake> orderedPancakes = createOrderHasPancakeFromRequest(orderRequest, newOrderEntity);
-        newOrderEntity.setOrderHasPancakes(orderedPancakes);
+        String description = orderRequest.getDescription() == null ? "" : orderRequest.getDescription();
+        newOrderEntity.setDescription(description);
 
-        Date currentDate = new Date();
-        newOrderEntity.setOrderDate(currentDate);
+        List<PancakeEntity> requestedPancakes = getRequestedPancakeEntityList(orderRequest, newOrderEntity);
+
+        newOrderEntity.setPancakeEntityList(requestedPancakes);
 
         String generatedUUID = UUID.randomUUID().toString();
         newOrderEntity.setOrderNumber(generatedUUID);
 
+        Date currentDate = new Date();
+        newOrderEntity.setOrderDate(currentDate);
+
         newOrderEntity = orderRepository.saveAndFlush(newOrderEntity);
         entityManager.refresh(newOrderEntity);
 
-        return modelMapper.map(newOrderEntity, OrderDTO.class);
+        return MapUtils.mapToOrderDTO(newOrderEntity, modelMapper);
     }
 
-    private List<OrderHasPancake> createOrderHasPancakeFromRequest(OrderRequest orderRequest, OrderEntity finalNewOrderEntity)
+    private List<PancakeEntity> getRequestedPancakeEntityList(OrderRequest orderRequest, OrderEntity newOrderEntity)
     {
-        return orderRequest.getOrderedPancakes().stream()
-                .map(pancakeQuantityReq ->
+        return orderRequest.getPancakeIds()
+                .stream()
+                .map(pancakeId ->
                     {
-                        int pancakeId = pancakeQuantityReq.getPancakeId();
                         PancakeEntity pancake = pancakeRepository.findById(pancakeId).orElseThrow(NotFoundException::new);
-                        int quantity = pancakeQuantityReq.getQuantity();
-
-                        return new OrderHasPancake(pancake, finalNewOrderEntity, quantity);
-
-                    }).collect(Collectors.toList());
-    }
-
-    private OrderDTO mapToOrderDTO(OrderEntity orderEntity)
-    {
-        return modelMapper.map(orderEntity, OrderDTO.class);
+                        if (pancake.getOrder() != null)
+                            throw new PancakeAlreadyOrderedException("Pancake id " + pancake.getId() + " already ordered");
+                        pancake.setOrder(newOrderEntity);
+                        return pancake;
+                    })
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -101,7 +101,7 @@ public class OrderServiceImpl implements OrderService
     {
         OrderEntity orderEntity = orderRepository.findOrderEntityByOrderNumber(orderNumber)
                 .orElseThrow(NotFoundException::new);
-        return mapToOrderDTO(orderEntity);
+        return modelMapper.map(orderEntity, OrderDTO.class);
     }
 
 }

@@ -13,7 +13,7 @@ public class IngredientRequest
     @NotBlank
     private String name;
     @NotBlank
-    private String categoryName;
+    private String categoryName; // this could be categoryId
     @NotNull
     private Boolean isHealthy;
     @NotNull

@@ -1,8 +1,9 @@
 package net.croz.pancakes_unlimited.services.impl;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import net.croz.pancakes_unlimited.exceptions.InvalidPancakeException;
 import net.croz.pancakes_unlimited.exceptions.NotFoundException;
-import net.croz.pancakes_unlimited.exceptions.PancakeNotValidException;
+import net.croz.pancakes_unlimited.exceptions.PancakeAlreadyOrderedException;
 import net.croz.pancakes_unlimited.models.dtos.PancakeDTO;
 import net.croz.pancakes_unlimited.models.entities.IngredientEntity;
 import net.croz.pancakes_unlimited.models.entities.PancakeEntity;
@@ -61,12 +62,10 @@ public class PancakeServiceImpl implements PancakeService
     }
 
 
-    // merging same  (making distinct) ingredients
     @Override
     public PancakeDTO insert(PancakeRequest pancakeRequest)
     {
-//        List<Integer> requestIngredientsId = pancakeRequest.getIngredientsId().stream().distinct().collect(Collectors.toList());
-        List<Integer> requestIngredientsId = pancakeRequest.getIngredientsId();
+        List<Integer> requestIngredientsId = new ArrayList(pancakeRequest.getIngredientsId());
         this.validatePancakeIngredientsId(requestIngredientsId);
 
         List<IngredientEntity> ingredientEntityList = getIngredientEntitiesByIds(requestIngredientsId);
@@ -88,13 +87,14 @@ public class PancakeServiceImpl implements PancakeService
         if (!pancakeRepository.existsById(id))
             throw new NotFoundException();
 
-        //        List<Integer> requestIngredientsId = pancakeRequest.getIngredientsId().stream().distinct().collect(Collectors.toList());
-        List<Integer> requestIngredientsId = pancakeRequest.getIngredientsId();
+        List<Integer> requestIngredientsId = new ArrayList(pancakeRequest.getIngredientsId());
         this.validatePancakeIngredientsId(requestIngredientsId);
 
-        List<IngredientEntity> ingredientEntityList = getIngredientEntitiesByIds(requestIngredientsId);
         PancakeEntity pancakeToUpdate = pancakeRepository.findById(id).orElseThrow(NotFoundException::new);
+        if (pancakeToUpdate.getOrder() != null)
+            throw new PancakeAlreadyOrderedException();
 
+        List<IngredientEntity> ingredientEntityList = getIngredientEntitiesByIds(requestIngredientsId);
         var newPancakeHasIngredient = MapUtils.createPancakeHasIngredients(ingredientEntityList, pancakeToUpdate);
 
         pancakeToUpdate.setId(id);
@@ -110,8 +110,10 @@ public class PancakeServiceImpl implements PancakeService
     @Override
     public void delete(Integer id)
     {
-        if (!pancakeRepository.existsById(id))
-            throw new NotFoundException();
+        PancakeEntity pancake = pancakeRepository.findById(id).orElseThrow(NotFoundException::new);
+        if (pancake.getOrder() != null)
+            throw new PancakeAlreadyOrderedException();
+
         pancakeRepository.deleteById(id);
     }
 
@@ -121,19 +123,18 @@ public class PancakeServiceImpl implements PancakeService
         this.validatePancakeIngredients(ingredientEntityList);
     }
 
-
     public void validatePancakeIngredients(List<IngredientEntity> ingredientEntityList)
     {
         long numOfBases = ingredientEntityList.stream()
                 .filter(ingredient -> "baza".equals(ingredient.getIngredientCategory().getName()))
                 .count();
         if (numOfBases != NUMBER_OF_ALLOWED_BASES)
-            throw new PancakeNotValidException("Pancake does not have exactly one ingredient of type baza");
+            throw new InvalidPancakeException("Pancake does not have exactly one ingredient of type baza");
 
         boolean hasIngredientOfTypeFil = ingredientEntityList.stream()
                 .anyMatch(ingredient -> "fil".equals(ingredient.getIngredientCategory().getName()));
         if (!hasIngredientOfTypeFil)
-            throw new PancakeNotValidException("Pancake does not have at least one ingredient of type fil");
+            throw new InvalidPancakeException("Pancake does not have at least one ingredient of type fil");
     }
 
     private List<IngredientEntity> getIngredientEntitiesByIds(List<Integer> ingredientsId)

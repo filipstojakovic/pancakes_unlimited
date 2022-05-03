@@ -29,6 +29,6 @@ public class OrderEntity
     @Column(name = "order_number", length = 36, columnDefinition = "char") // UUID.randomUUID() is of length 36
     private String orderNumber;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    List<OrderHasPancake> orderHasPancakes = new ArrayList<>();
+    @OneToMany(mappedBy = "order")
+    private List<PancakeEntity> pancakeEntityList=new ArrayList<>();
 }

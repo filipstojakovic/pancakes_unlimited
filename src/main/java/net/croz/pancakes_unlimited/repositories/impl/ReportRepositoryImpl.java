@@ -23,11 +23,10 @@ public class ReportRepositoryImpl implements ReportRepository
     public List<Object[]> getMostOrderedIngredientsLast30Days()
     {
         Query query = entityManager.createNativeQuery("" +
-                "SELECT ingredient.id AS id, ingredient.name AS name, ingredient.is_healthy AS isHealthy, SUM(quantity) AS orderedTimes FROM ingredient\n"+
+                "SELECT ingredient.id AS id, ingredient.name AS name, ingredient.is_healthy AS isHealthy, COUNT(*) AS orderedTimes FROM ingredient\n"+
                 "JOIN pancake_has_ingredient ON ingredient.id=pancake_has_ingredient.ingredient_id\n" +
                 "JOIN pancake on pancake.id=pancake_has_ingredient.pancake_id\n" +
-                "JOIN order_has_pancake on order_has_pancake.pancake_id=pancake.id\n" +
-                "JOIN sales_order on sales_order.id=order_has_pancake.sales_order_id\n" +
+                "JOIN sales_order on sales_order.id=pancake.sales_order_id\n" +
                 "WHERE sales_order.order_date >= NOW() - INTERVAL 30 DAY\n" +
                 "GROUP BY ingredient.id ORDER BY orderedTimes DESC" +
                 "");
@@ -40,11 +39,10 @@ public class ReportRepositoryImpl implements ReportRepository
     public List<Object[]> getMostHealthyOrderedIngredientsLast30Days()
     {
         Query query = entityManager.createNativeQuery("" +
-                "SELECT ingredient.id AS id, ingredient.name AS name, ingredient.is_healthy AS isHealthy, SUM(quantity) AS orderedTimes FROM ingredient\n"+
+                "SELECT ingredient.id AS id, ingredient.name AS name, ingredient.is_healthy AS isHealthy, COUNT(ingredient_id) AS orderedTimes FROM ingredient\n"+
                 "JOIN pancake_has_ingredient ON ingredient.id=pancake_has_ingredient.ingredient_id\n" +
                 "JOIN pancake on pancake.id=pancake_has_ingredient.pancake_id\n" +
-                "JOIN order_has_pancake on order_has_pancake.pancake_id=pancake.id\n" +
-                "JOIN sales_order on sales_order.id=order_has_pancake.sales_order_id\n" +
+                "JOIN sales_order on sales_order.id=pancake.sales_order_id\n" +
                 "WHERE sales_order.order_date >= NOW() - INTERVAL 30 DAY AND ingredient.is_healthy=TRUE\n" +
                 "GROUP BY ingredient.id ORDER BY orderedTimes DESC" +
                 "");

@@ -3,11 +3,11 @@ package net.croz.pancakes_unlimited.models.requests;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
-import java.util.List;
+import java.util.Set;
 
 @Data
 public class PancakeRequest
 {
     @NotEmpty
-    List<Integer> ingredientsId;
+    Set<Integer> ingredientsId;
 }

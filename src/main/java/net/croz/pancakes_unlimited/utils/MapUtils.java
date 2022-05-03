@@ -1,16 +1,15 @@
 package net.croz.pancakes_unlimited.utils;
 
 import net.croz.pancakes_unlimited.models.dtos.CategoryDTO;
+import net.croz.pancakes_unlimited.models.dtos.OrderDTO;
 import net.croz.pancakes_unlimited.models.dtos.PancakeDTO;
-import net.croz.pancakes_unlimited.models.entities.CategoryEntity;
-import net.croz.pancakes_unlimited.models.entities.IngredientEntity;
-import net.croz.pancakes_unlimited.models.entities.PancakeEntity;
-import net.croz.pancakes_unlimited.models.entities.PancakeHasIngredient;
+import net.croz.pancakes_unlimited.models.entities.*;
 import net.croz.pancakes_unlimited.models.responses.IngredientReportResponse;
 import net.croz.pancakes_unlimited.models.responses.PancakeIngredientResponse;
 import org.modelmapper.ModelMapper;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,7 +34,7 @@ public class MapUtils
                 response.setIngredientId((Integer) result[ID_POSITION]);
                 response.setName((String) result[NAME_POSITION]);
                 response.setIsHealthy((Boolean) result[IS_HEALTHY_POSITION]);
-                response.setOrderedTimes(((BigDecimal) result[ORDERED_TIMES_POSITION]).toBigInteger());
+                response.setOrderedTimes(((BigInteger) result[ORDERED_TIMES_POSITION]));
                 return response;
             }).collect(Collectors.toList());
     }
@@ -82,5 +81,13 @@ public class MapUtils
                 pancakeHasIngredient.setPrice(ingredientEntity.getPrice());
                 return pancakeHasIngredient;
             }).collect(Collectors.toList());
+    }
+
+    public static OrderDTO mapToOrderDTO(OrderEntity orderEntity, ModelMapper modelMapper)
+    {
+        OrderDTO orderDTO = modelMapper.map(orderEntity, OrderDTO.class);
+        List<Integer> pancakeIds = orderEntity.getPancakeEntityList().stream().map(PancakeEntity::getId).collect(Collectors.toList());
+        orderDTO.setPancakeIds(pancakeIds);
+        return orderDTO;
     }
 }
