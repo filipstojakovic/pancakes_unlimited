@@ -1,7 +1,7 @@
 package net.croz.pancakes_unlimited.controllers;
 
-import net.croz.pancakes_unlimited.controllers.interfaces.IFindController;
-import net.croz.pancakes_unlimited.controllers.interfaces.IInsertController;
+import net.croz.pancakes_unlimited.controllers.crudinterfaces.IFindController;
+import net.croz.pancakes_unlimited.controllers.crudinterfaces.IInsertController;
 import net.croz.pancakes_unlimited.models.dtos.OrderDTO;
 import net.croz.pancakes_unlimited.models.requests.OrderRequest;
 import net.croz.pancakes_unlimited.services.OrderService;

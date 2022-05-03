@@ -1,4 +1,4 @@
-package net.croz.pancakes_unlimited.controllers.interfaces;
+package net.croz.pancakes_unlimited.controllers.crudinterfaces;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;

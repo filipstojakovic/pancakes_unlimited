@@ -62,19 +62,9 @@ public class OrderServiceImpl implements OrderService
         OrderEntity newOrderEntity = new OrderEntity();
         newOrderEntity.setDescription(desctiption);
 
-        OrderEntity finalNewOrderEntity = newOrderEntity;
-        List<OrderHasPancake> orderedPancakes = orderRequest.getOrderedPancakes().stream()
-                .map(pancakeQuantityReq ->
-                    {
-                        int pancakeId = pancakeQuantityReq.getPancakeId();
-                        PancakeEntity pancake = pancakeRepository.findById(pancakeId).orElseThrow(NotFoundException::new);
-                        int quantity = pancakeQuantityReq.getQuantity();
-
-                        return new OrderHasPancake(pancake, finalNewOrderEntity, quantity);
-
-                    }).collect(Collectors.toList());
-
+        List<OrderHasPancake> orderedPancakes = createOrderHasPancakeFromRequest(orderRequest, newOrderEntity);
         newOrderEntity.setOrderHasPancakes(orderedPancakes);
+
         Date currentDate = new Date();
         newOrderEntity.setOrderDate(currentDate);
 
@@ -85,6 +75,20 @@ public class OrderServiceImpl implements OrderService
         entityManager.refresh(newOrderEntity);
 
         return modelMapper.map(newOrderEntity, OrderDTO.class);
+    }
+
+    private List<OrderHasPancake> createOrderHasPancakeFromRequest(OrderRequest orderRequest, OrderEntity finalNewOrderEntity)
+    {
+        return orderRequest.getOrderedPancakes().stream()
+                .map(pancakeQuantityReq ->
+                    {
+                        int pancakeId = pancakeQuantityReq.getPancakeId();
+                        PancakeEntity pancake = pancakeRepository.findById(pancakeId).orElseThrow(NotFoundException::new);
+                        int quantity = pancakeQuantityReq.getQuantity();
+
+                        return new OrderHasPancake(pancake, finalNewOrderEntity, quantity);
+
+                    }).collect(Collectors.toList());
     }
 
     private OrderDTO mapToOrderDTO(OrderEntity orderEntity)
@@ -99,4 +103,5 @@ public class OrderServiceImpl implements OrderService
                 .orElseThrow(NotFoundException::new);
         return mapToOrderDTO(orderEntity);
     }
+
 }

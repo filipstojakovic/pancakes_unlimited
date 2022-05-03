@@ -1,6 +1,6 @@
 package net.croz.pancakes_unlimited.controllers;
 
-import net.croz.pancakes_unlimited.controllers.interfaces.IFindController;
+import net.croz.pancakes_unlimited.controllers.crudinterfaces.IFindController;
 import net.croz.pancakes_unlimited.models.dtos.CategoryDTO;
 import net.croz.pancakes_unlimited.services.CategoryService;
 import org.springframework.web.bind.annotation.RequestMapping;

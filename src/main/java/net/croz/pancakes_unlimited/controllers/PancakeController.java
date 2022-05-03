@@ -1,6 +1,6 @@
 package net.croz.pancakes_unlimited.controllers;
 
-import net.croz.pancakes_unlimited.controllers.interfaces.ICrudController;
+import net.croz.pancakes_unlimited.controllers.crudinterfaces.ICrudController;
 import net.croz.pancakes_unlimited.models.dtos.PancakeDTO;
 import net.croz.pancakes_unlimited.models.requests.PancakeRequest;
 import net.croz.pancakes_unlimited.services.PancakeService;

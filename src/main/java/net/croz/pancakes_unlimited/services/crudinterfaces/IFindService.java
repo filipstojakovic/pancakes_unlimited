@@ -1,4 +1,4 @@
-package net.croz.pancakes_unlimited.services.interfaces;
+package net.croz.pancakes_unlimited.services.crudinterfaces;
 
 import java.util.List;
 
