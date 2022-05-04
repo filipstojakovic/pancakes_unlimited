@@ -1,16 +1,14 @@
 package net.croz.pancakes_unlimited.models.responses;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import net.croz.pancakes_unlimited.models.dtos.CategoryDTO;
 
 import java.math.BigDecimal;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode
 public class PancakeIngredientResponse
 {
