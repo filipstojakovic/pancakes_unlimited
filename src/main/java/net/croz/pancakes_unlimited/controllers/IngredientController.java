@@ -21,15 +21,15 @@ public class IngredientController implements ICrudController<Integer, Ingredient
     }
 
     @Override
-    public IngredientDTO findById(Integer id)
-    {
-        return ingredientService.findById(id);
-    }
-
-    @Override
     public List<IngredientDTO> findAll()
     {
         return ingredientService.findAll();
+    }
+
+    @Override
+    public IngredientDTO findById(Integer id)
+    {
+        return ingredientService.findById(id);
     }
 
     @Override

@@ -19,7 +19,6 @@ public class ReportController
         this.reportService = reportService;
     }
 
-
     @GetMapping("/all")
     public List<IngredientReportResponse> getMostOrderedIngredientsLast30Days()
     {

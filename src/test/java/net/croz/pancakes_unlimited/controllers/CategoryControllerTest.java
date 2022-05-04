@@ -36,27 +36,27 @@ class CategoryControllerTest
     @SneakyThrows
     @WithMockUser(username = "q", roles = {"EMPLOYEE"})
     @Test
-    void findAll_validRequest_Authorized_return200AndResultJson()
+    void findAll_validRequest_authorized_return200AndResult()
     {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/categories");
 
         CategoryDTO cat1 = new CategoryDTO(1, "baza");
         CategoryDTO cat2 = new CategoryDTO(2, "fil");
-        List<CategoryDTO> inputCategories = List.of(cat1, cat2);
-        when(categoryService.findAll()).thenReturn(inputCategories);
+        List<CategoryDTO> expectedResult = List.of(cat1, cat2);
+        when(categoryService.findAll()).thenReturn(expectedResult);
 
         MvcResult result = mockMvc.perform(request).andExpect(status().is(SC_OK)).andReturn();
 
         String responseContent = result.getResponse().getContentAsString();
-        List<CategoryDTO> outputCategories = Arrays.asList(mapper.readValue(responseContent, CategoryDTO[].class));
+        List<CategoryDTO> responseResult = Arrays.asList(mapper.readValue(responseContent, CategoryDTO[].class));
 
-        assertThat(outputCategories).isEqualTo(inputCategories);
+        assertThat(responseResult).isEqualTo(expectedResult);
     }
 
     @SneakyThrows
     @WithMockUser(username = "w", roles = {"CUSTOMER"})
     @Test
-    void findAll_invalidRequest_Forbidden_return403()
+    void findAll_validRequest_Forbidden_return403()
     {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/categories");
         mockMvc.perform(request).andExpect(status().is(SC_FORBIDDEN));
@@ -64,37 +64,37 @@ class CategoryControllerTest
 
     @SneakyThrows
     @Test
-    void findAll_invalidRequest_Unauthorized_return401()
+    void findAll_validRequest_unauthorized_return401()
     {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/categories");
         mockMvc.perform(request).andExpect(status().is(SC_UNAUTHORIZED));
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @SneakyThrows
     @WithMockUser(username = "q", roles = {"EMPLOYEE"})
     @Test
-    void findById_validRequest_Authorized_return200AndResultJson()
+    void findById_validRequest_authorized_return200AndResult()
     {
         int id = 1;
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/categories/{id}", id);
 
-        CategoryDTO expectedValue = new CategoryDTO(id, "baza");
-        when(categoryService.findById(id)).thenReturn(expectedValue);
+        CategoryDTO expectedResult = new CategoryDTO(id, "baza");
+        when(categoryService.findById(id)).thenReturn(expectedResult);
 
         MvcResult result = mockMvc.perform(request).andExpect(status().is(SC_OK)).andReturn();
 
         String responseContent = result.getResponse().getContentAsString();
-        CategoryDTO outputCategories = mapper.readValue(responseContent, CategoryDTO.class);
+        CategoryDTO responseResult = mapper.readValue(responseContent, CategoryDTO.class);
 
-        assertThat(outputCategories).isEqualTo(expectedValue);
+        assertThat(responseResult).isEqualTo(expectedResult);
     }
 
     @SneakyThrows
     @WithMockUser(username = "q", roles = {"EMPLOYEE"})
     @Test
-    void findById_invalidRequest_Authorized_return404()
+    void findById_invalidRequest_authorized_return404()
     {
         int id = 5;
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/categories/{id}", id);
@@ -110,8 +110,6 @@ class CategoryControllerTest
     {
         int id = 5;
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/categories/{id}", id);
-        when(categoryService.findById(id)).thenThrow(new NotFoundException());
-
         mockMvc.perform(request).andExpect(status().is(SC_FORBIDDEN));
     }
 

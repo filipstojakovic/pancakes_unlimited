@@ -21,15 +21,15 @@ public class PancakeController implements ICrudController<Integer, PancakeReques
     }
 
     @Override
-    public List<PancakeDTO> findAll()
-    {
-        return pancakeService.findAll();
-    }
-
-    @Override
     public PancakeDTO findById(Integer id)
     {
         return pancakeService.findById(id);
+    }
+
+    @Override
+    public List<PancakeDTO> findAll()
+    {
+        return pancakeService.findAll();
     }
 
     @Override

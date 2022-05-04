@@ -15,10 +15,15 @@ import java.util.stream.Collectors;
 
 public class MapUtils
 {
-    private static final int ID_POSITION = 0;
-    private static final int NAME_POSITION = 1;
-    private static final int IS_HEALTHY_POSITION = 2;
-    private static final int ORDERED_TIMES_POSITION = 3;
+
+    //TODO: refactor to use this generic
+    public static <S, T> List<T> mapList(List<S> source, Class<T> targetClass, ModelMapper modelMapper)
+    {
+        return source
+                .stream()
+                .map(element -> modelMapper.map(element, targetClass))
+                .collect(Collectors.toList());
+    }
 
     /**
      * Mapping (converting) sql result list of object array into list of IngredientReportResponse
@@ -28,6 +33,11 @@ public class MapUtils
      */
     public static List<IngredientReportResponse> mapToIngredientReport(List<Object[]> sqlReportResult)
     {
+        final int ID_POSITION = 0;
+        final int NAME_POSITION = 1;
+        final int IS_HEALTHY_POSITION = 2;
+        final int ORDERED_TIMES_POSITION = 3;
+
         return sqlReportResult.stream().map(result ->
             {
                 IngredientReportResponse response = new IngredientReportResponse();

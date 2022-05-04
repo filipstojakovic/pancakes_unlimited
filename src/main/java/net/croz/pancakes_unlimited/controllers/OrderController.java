@@ -24,15 +24,15 @@ public class OrderController implements IFindController<Integer, OrderDTO>, IIns
     }
 
     @Override
-    public OrderDTO findById(Integer id)
-    {
-        return orderService.findById(id);
-    }
-
-    @Override
     public List<OrderDTO> findAll()
     {
         return orderService.findAll();
+    }
+
+    @Override
+    public OrderDTO findById(Integer id)
+    {
+        return orderService.findById(id);
     }
 
     @GetMapping(params = "orderNumber")

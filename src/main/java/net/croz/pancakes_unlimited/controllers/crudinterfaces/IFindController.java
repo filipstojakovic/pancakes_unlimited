@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface IFindController<ID, RESP>
 {
-    @GetMapping("/{id}")
-    RESP findById(@PathVariable ID id);
-
     @GetMapping
     List<RESP> findAll();
+
+    @GetMapping("/{id}")
+    RESP findById(@PathVariable ID id);
 }
