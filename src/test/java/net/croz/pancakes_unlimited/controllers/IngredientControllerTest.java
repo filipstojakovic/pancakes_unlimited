@@ -35,12 +35,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class IngredientControllerTest
 {
     public static final MediaType APPLICATION_JSON_UTF8 = new MediaType(MediaType.APPLICATION_JSON.getType(), MediaType.APPLICATION_JSON.getSubtype(), StandardCharsets.UTF_8);
-
     private static final ObjectMapper mapper = new ObjectMapper();
     private static ObjectWriter objectWriter;
     @Autowired
     private MockMvc mockMvc;
-
     @MockBean
     private IngredientService ingredientService;
 
@@ -159,6 +157,8 @@ class IngredientControllerTest
                 .thenReturn(expectedResponse);
 
         MvcResult result = mockMvc.perform(request).andExpect(status().is(SC_CREATED)).andReturn();
+
+        verify(ingredientService).insert(requestObject);
 
         String responseContent = result.getResponse().getContentAsString();
         IngredientDTO resultResponse = mapper.readValue(responseContent, IngredientDTO.class);
