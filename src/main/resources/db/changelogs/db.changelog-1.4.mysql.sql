@@ -11,3 +11,7 @@ ALTER TABLE pancake
 
 -- changeset filip:23
 SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
+
+-- changeset filip:24
+ALTER TABLE sales_order
+    ADD UNIQUE (order_number);

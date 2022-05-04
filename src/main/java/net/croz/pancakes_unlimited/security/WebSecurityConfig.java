@@ -29,7 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
      * "role" user's role (CUSTOMER, EMPLOYEE, STORE_OWNER)
      *
      * @param auth used to set in memory authentication and to add authorized users
-     * @throws Exception  if file users.json is not found
+     * @throws Exception  if file users.json is not found, or if AuthenticationManagerBuilder.inMemoryAuthentication() throws Exception
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception
@@ -57,7 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
      * "role" array of user roles that will have access
      *
      * @param http used for setting authorization
-     * @throws Exception if file rules.json is not found
+     * @throws Exception if file rules.json is not found, or if HttpSecurity.httpBasic() or csrf() throws Exception
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception

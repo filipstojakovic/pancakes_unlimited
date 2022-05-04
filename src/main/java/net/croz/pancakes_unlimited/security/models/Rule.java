@@ -9,6 +9,11 @@ import java.util.List;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
+/*
+ * "methods" array of method types (such as GET, POST, PUT, DELETE,...). If left empty then allow method types are allowed.
+ * "pattern" end-point that we want to secure
+ * "role" array of user roles that will have access
+ */
 public class Rule
 {
     private List<String> methods;
