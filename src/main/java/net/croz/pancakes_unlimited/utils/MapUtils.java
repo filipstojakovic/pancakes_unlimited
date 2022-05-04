@@ -1,9 +1,11 @@
 package net.croz.pancakes_unlimited.utils;
 
 import net.croz.pancakes_unlimited.models.dtos.CategoryDTO;
-import net.croz.pancakes_unlimited.models.dtos.OrderDTO;
 import net.croz.pancakes_unlimited.models.dtos.PancakeDTO;
-import net.croz.pancakes_unlimited.models.entities.*;
+import net.croz.pancakes_unlimited.models.entities.CategoryEntity;
+import net.croz.pancakes_unlimited.models.entities.IngredientEntity;
+import net.croz.pancakes_unlimited.models.entities.PancakeEntity;
+import net.croz.pancakes_unlimited.models.entities.PancakeHasIngredient;
 import net.croz.pancakes_unlimited.models.responses.IngredientReportResponse;
 import net.croz.pancakes_unlimited.models.responses.PancakeIngredientResponse;
 import org.modelmapper.ModelMapper;
@@ -16,7 +18,6 @@ import java.util.stream.Collectors;
 public class MapUtils
 {
 
-    //TODO: refactor to use this generic
     public static <S, T> List<T> mapList(List<S> source, Class<T> targetClass, ModelMapper modelMapper)
     {
         return source
@@ -93,11 +94,4 @@ public class MapUtils
             }).collect(Collectors.toList());
     }
 
-    public static OrderDTO mapToOrderDTO(OrderEntity orderEntity, ModelMapper modelMapper)
-    {
-        OrderDTO orderDTO = modelMapper.map(orderEntity, OrderDTO.class);
-        List<Integer> pancakeIds = orderEntity.getPancakeEntityList().stream().map(PancakeEntity::getId).collect(Collectors.toList());
-        orderDTO.setPancakeIds(pancakeIds);
-        return orderDTO;
-    }
 }

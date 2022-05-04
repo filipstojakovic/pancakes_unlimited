@@ -8,6 +8,7 @@ import net.croz.pancakes_unlimited.models.requests.IngredientRequest;
 import net.croz.pancakes_unlimited.repositories.CategoryEntityRepository;
 import net.croz.pancakes_unlimited.repositories.IngredientEntityRepository;
 import net.croz.pancakes_unlimited.services.IngredientService;
+import net.croz.pancakes_unlimited.utils.MapUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -38,9 +38,7 @@ public class IngredientServiceImpl implements IngredientService
     public List<IngredientDTO> findAll()
     {
         List<IngredientEntity> ingredientEntityList = ingredientRepository.findAll();
-        return ingredientEntityList.stream()
-                .map(ingredientEntity -> modelMapper.map(ingredientEntity, IngredientDTO.class))
-                .collect(Collectors.toList());
+        return MapUtils.mapList(ingredientEntityList,IngredientDTO.class,modelMapper);
     }
 
     @Override

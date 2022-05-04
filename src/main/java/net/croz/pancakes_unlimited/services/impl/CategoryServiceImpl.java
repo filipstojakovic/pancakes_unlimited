@@ -5,12 +5,12 @@ import net.croz.pancakes_unlimited.models.dtos.CategoryDTO;
 import net.croz.pancakes_unlimited.models.entities.CategoryEntity;
 import net.croz.pancakes_unlimited.repositories.CategoryEntityRepository;
 import net.croz.pancakes_unlimited.services.CategoryService;
+import net.croz.pancakes_unlimited.utils.MapUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -29,9 +29,7 @@ public class CategoryServiceImpl implements CategoryService
     public List<CategoryDTO> findAll()
     {
         List<CategoryEntity> categoryEntityList = categoryRepository.findAll();
-        return categoryEntityList.stream()
-                .map(categoryEntity -> modelMapper.map(categoryEntity, CategoryDTO.class))
-                .collect(Collectors.toList());
+        return MapUtils.mapList(categoryEntityList, CategoryDTO.class, modelMapper);
     }
 
     @Override

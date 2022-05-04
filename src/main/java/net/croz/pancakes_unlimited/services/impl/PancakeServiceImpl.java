@@ -61,7 +61,6 @@ public class PancakeServiceImpl implements PancakeService
         return MapUtils.mapPancakeEntityToPancakeDTO(pancakeEntity, modelMapper);
     }
 
-
     @Override
     public PancakeDTO insert(PancakeRequest pancakeRequest)
     {
