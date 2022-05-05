@@ -21,14 +21,14 @@ public class ReportServiceImpl implements ReportService
     }
 
     @Override
-    public List<IngredientReportResponse> getMostOrderedIngredientsLast30Days()
+    public List<IngredientReportResponse> findAllMostOrderedIngredientsLast30Days()
     {
         List<Object[]> sqlReportResult = reportRepository.getMostOrderedIngredientsLast30Days();
         return MapUtils.mapToIngredientReport(sqlReportResult);
     }
 
     @Override
-    public List<IngredientReportResponse> getMostHealthyOrderedIngredientsLast30Days()
+    public List<IngredientReportResponse> findAllMostHealthyOrderedIngredientsLast30Days()
     {
         List<Object[]> sqlReportResult = reportRepository.getMostHealthyOrderedIngredientsLast30Days();
         return MapUtils.mapToIngredientReport(sqlReportResult);

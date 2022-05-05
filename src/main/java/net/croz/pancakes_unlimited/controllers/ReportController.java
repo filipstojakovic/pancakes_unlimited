@@ -20,15 +20,15 @@ public class ReportController
     }
 
     @GetMapping("/all")
-    public List<IngredientReportResponse> getMostOrderedIngredientsLast30Days()
+    public List<IngredientReportResponse> findAllMostOrderedIngredientsLast30Days()
     {
-        return reportService.getMostOrderedIngredientsLast30Days();
+        return reportService.findAllMostOrderedIngredientsLast30Days();
     }
 
     @GetMapping("/healthy")
-    public List<IngredientReportResponse> getMostHealOrderedIngredientsLast30Days()
+    public List<IngredientReportResponse> findAllMostHealOrderedIngredientsLast30Days()
     {
-        return reportService.getMostHealthyOrderedIngredientsLast30Days();
+        return reportService.findAllMostHealthyOrderedIngredientsLast30Days();
     }
 }
 

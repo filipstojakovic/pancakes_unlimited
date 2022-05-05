@@ -72,7 +72,7 @@ class PancakeControllerTest
     }
 
     @SneakyThrows
-    @WithMockUser(username = "w", roles = {"EMPLOYEE"})
+    @WithMockUser(username = "w", roles = {"EMPLOYEE","STORE_OWNER"})
     @Test
     void findAll_validRequest_Forbidden_return403()
     {
@@ -122,7 +122,7 @@ class PancakeControllerTest
     }
 
     @SneakyThrows
-    @WithMockUser(username = "w", roles = {"EMPLOYEE"})
+    @WithMockUser(username = "w", roles = {"EMPLOYEE","STORE_OWNER"})
     @Test
     void findById_validRequest_Forbidden_return403()
     {
@@ -184,7 +184,7 @@ class PancakeControllerTest
     }
 
     @SneakyThrows
-    @WithMockUser(username = "w", roles = {"EMPLOYEE"})
+    @WithMockUser(username = "w", roles = {"EMPLOYEE","STORE_OWNER"})
     @Test
     void insert_validRequest_Forbidden_return403()
     {
@@ -273,7 +273,7 @@ class PancakeControllerTest
     }
 
     @SneakyThrows
-    @WithMockUser(username = "w", roles = {"EMPLOYEE"})
+    @WithMockUser(username = "w", roles = {"EMPLOYEE","STORE_OWNER"})
     @Test
     void update_validRequest_Forbidden_return403()
     {
@@ -328,7 +328,7 @@ class PancakeControllerTest
     }
 
     @SneakyThrows
-    @WithMockUser(username = "w", roles = {"EMPLOYEE"})
+    @WithMockUser(username = "w", roles = {"EMPLOYEE","STORE_OWNER"})
     @Test
     void delete_validRequest_Forbidden_return403()
     {

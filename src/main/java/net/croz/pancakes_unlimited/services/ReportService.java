@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface ReportService
 {
-    List<IngredientReportResponse> getMostOrderedIngredientsLast30Days();
-    List<IngredientReportResponse> getMostHealthyOrderedIngredientsLast30Days();
+    List<IngredientReportResponse> findAllMostOrderedIngredientsLast30Days();
+    List<IngredientReportResponse> findAllMostHealthyOrderedIngredientsLast30Days();
 }

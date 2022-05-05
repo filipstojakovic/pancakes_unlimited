@@ -36,7 +36,7 @@ public class OrderController implements IFindController<Integer, OrderDTO>, IIns
     }
 
     @GetMapping(params = "orderNumber")
-    public OrderDTO orderNumber(@RequestParam String orderNumber)
+    public OrderDTO findByOrderNumber(@RequestParam String orderNumber)
     {
         return orderService.findByOrderNumber(orderNumber);
     }

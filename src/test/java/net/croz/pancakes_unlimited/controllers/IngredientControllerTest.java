@@ -71,7 +71,7 @@ class IngredientControllerTest
     }
 
     @SneakyThrows
-    @WithMockUser(username = "w", roles = {"CUSTOMER"})
+    @WithMockUser(username = "w", roles = {"CUSTOMER","STORE_OWNER"})
     @Test
     void findAll_validRequest_Forbidden_return403()
     {
@@ -121,7 +121,7 @@ class IngredientControllerTest
     }
 
     @SneakyThrows
-    @WithMockUser(username = "w", roles = {"CUSTOMER"})
+    @WithMockUser(username = "w", roles = {"CUSTOMER","STORE_OWNER"})
     @Test
     void findById_validRequest_Forbidden_return403()
     {
@@ -184,7 +184,7 @@ class IngredientControllerTest
     }
 
     @SneakyThrows
-    @WithMockUser(username = "w", roles = {"CUSTOMER"})
+    @WithMockUser(username = "w", roles = {"CUSTOMER","STORE_OWNER"})
     @Test
     void insert_validRequest_Forbidden_return403()
     {
@@ -276,7 +276,7 @@ class IngredientControllerTest
     }
 
     @SneakyThrows
-    @WithMockUser(username = "w", roles = {"CUSTOMER"})
+    @WithMockUser(username = "w", roles = {"CUSTOMER","STORE_OWNER"})
     @Test
     void update_validRequest_Forbidden_return403()
     {
@@ -331,7 +331,7 @@ class IngredientControllerTest
     }
 
     @SneakyThrows
-    @WithMockUser(username = "w", roles = {"CUSTOMER"})
+    @WithMockUser(username = "w", roles = {"CUSTOMER","STORE_OWNER"})
     @Test
     void delete_validRequest_Forbidden_return403()
     {

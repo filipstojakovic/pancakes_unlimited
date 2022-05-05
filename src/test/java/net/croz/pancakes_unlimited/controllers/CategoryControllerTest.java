@@ -54,7 +54,7 @@ class CategoryControllerTest
     }
 
     @SneakyThrows
-    @WithMockUser(username = "w", roles = {"CUSTOMER"})
+    @WithMockUser(username = "w", roles = {"CUSTOMER","STORE_OWNER"})
     @Test
     void findAll_validRequest_Forbidden_return403()
     {
@@ -104,7 +104,7 @@ class CategoryControllerTest
     }
 
     @SneakyThrows
-    @WithMockUser(username = "w", roles = {"CUSTOMER"})
+    @WithMockUser(username = "w", roles = {"CUSTOMER","STORE_OWNER"})
     @Test
     void findById_validRequest_Forbidden_return403()
     {
