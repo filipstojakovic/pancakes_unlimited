@@ -1,6 +1,5 @@
 package net.croz.pancakes_unlimited.services.impl;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import net.croz.pancakes_unlimited.exceptions.InvalidPancakeException;
 import net.croz.pancakes_unlimited.exceptions.NotFoundException;
 import net.croz.pancakes_unlimited.exceptions.PancakeAlreadyOrderedException;
@@ -25,7 +24,6 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class PancakeServiceImpl implements PancakeService
 {
     public static final int NUMBER_OF_ALLOWED_BASES = 1;

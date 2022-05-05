@@ -180,7 +180,6 @@ class IngredientControllerTest
         //missing price
 
         MvcResult result = mockMvc.perform(request).andExpect(status().is(SC_BAD_REQUEST)).andReturn();
-
     }
 
     @SneakyThrows
@@ -327,7 +326,8 @@ class IngredientControllerTest
 
         doThrow(new NotFoundException()).when(ingredientService).delete(id);
 
-        MvcResult result = mockMvc.perform(request).andExpect(status().is(SC_NOT_FOUND)).andReturn();
+        MvcResult result = mockMvc.perform(request).andExpect(status().is(SC_NOT_FOUND))
+                .andReturn();
     }
 
     @SneakyThrows

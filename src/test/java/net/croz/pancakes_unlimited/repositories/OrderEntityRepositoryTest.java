@@ -1,5 +1,6 @@
 package net.croz.pancakes_unlimited.repositories;
 
+import net.croz.pancakes_unlimited.exceptions.NotFoundException;
 import net.croz.pancakes_unlimited.models.entities.OrderEntity;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Date;
+import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -38,12 +40,14 @@ class OrderEntityRepositoryTest
     {
         OrderEntity order = new OrderEntity();
         order.setId(169);
-        order.setOrderNumber("f71508c8-09a9-4a37-aaaa-64645ee62828");
+        String orderNumber = UUID.randomUUID().toString();
+        order.setOrderNumber(orderNumber);
         order.setDescription("cool description");
-        order.setOrderDate(new Date(12345678));
+        order.setOrderDate(new Date());
+        orderRepository.save(order);
 
-        OrderEntity savedOrder = orderRepository.save(order);
+        OrderEntity OrderByOrderNumber = orderRepository.findOrderEntityByOrderNumber(orderNumber).orElseThrow(NotFoundException::new);
 
-        assertThat(savedOrder).isNotEqualTo(order);
+        assertThat(OrderByOrderNumber).isEqualTo(OrderByOrderNumber);
     }
 }

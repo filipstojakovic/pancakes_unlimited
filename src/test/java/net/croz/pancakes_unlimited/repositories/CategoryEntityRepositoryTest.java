@@ -22,7 +22,7 @@ class CategoryEntityRepositoryTest
     private CategoryEntityRepository categoryRepository;
 
     @Test
-    void findCategoryByNameTest()
+    void findCategoryByName_validRequest_returnResult()
     {
         CategoryEntity categoryEntity = categoryRepository.findByName("fil").orElseThrow(NotFoundException::new);
         assertThat(categoryEntity.getName()).isEqualTo("fil");
@@ -30,7 +30,7 @@ class CategoryEntityRepositoryTest
 
 
     @Test
-    void findCategoryByNameThatDoesntExistTest()
+    void findCategoryByName_invalidRequest_throwException()
     {
         Optional<CategoryEntity> categoryEntity = categoryRepository.findByName("unknown");
         assertThat(categoryEntity.isEmpty()).isEqualTo(true);
