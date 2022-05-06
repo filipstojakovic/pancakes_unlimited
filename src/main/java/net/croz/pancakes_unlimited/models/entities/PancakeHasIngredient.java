@@ -1,29 +1,27 @@
 package net.croz.pancakes_unlimited.models.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import net.croz.pancakes_unlimited.models.entities.compositekeys.PancakeIngredientKey;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 
-@Entity
-@Getter
-@Setter
+@Getter@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode
 @IdClass(PancakeIngredientKey.class)
+@Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "pancake_has_ingredient")
 public class PancakeHasIngredient
 {
-    @JsonIgnore
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pancake_id")
     private PancakeEntity pancake;
 
-    @JsonIgnore
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ingredient_id")
@@ -31,4 +29,5 @@ public class PancakeHasIngredient
 
     @Column(name = "price")
     private BigDecimal price;
+
 }

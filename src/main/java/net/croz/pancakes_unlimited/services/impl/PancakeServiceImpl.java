@@ -69,8 +69,7 @@ public class PancakeServiceImpl implements PancakeService
         ingredientEntityList = ingredientEntityList.stream().distinct().collect(Collectors.toList());
 
         PancakeEntity newPancake = new PancakeEntity();
-        PancakeEntity finalNewPancake = newPancake; // Variable used in lambda expression should be final or effectively final
-        List<PancakeHasIngredient> pancakeHasIngredients = MapUtils.createPancakeHasIngredients(ingredientEntityList, finalNewPancake);
+        List<PancakeHasIngredient> pancakeHasIngredients = MapUtils.createPancakeHasIngredients(ingredientEntityList, newPancake);
 
         newPancake.setPancakeIngredients(pancakeHasIngredients);
         newPancake = pancakeRepository.saveAndFlush(newPancake);

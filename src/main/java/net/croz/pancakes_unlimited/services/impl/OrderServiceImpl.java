@@ -138,13 +138,13 @@ public class OrderServiceImpl implements OrderService
         {
             discount = calculateHealthyPancakeDiscount(orderedPancakes);
 
-        } else if (totalPrice.compareTo(FIFTY) > 0) // totalPrice > 50, discount is 10%
-        {
-            discount = Utils.percentage(totalPrice, TEN);
-
-        } else // 20 <= totalPrice < 50, discount is 5%
+        } else if (totalPrice.compareTo(FIFTY) <= 0) // 20 < totalPrice <= 50, discount is 5%
         {
             discount = Utils.percentage(totalPrice, FIVE);
+
+        } else // totalPrice > 50, discount is 10%
+        {
+            discount = Utils.percentage(totalPrice, TEN);
         }
 
         return discount;

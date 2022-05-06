@@ -33,7 +33,6 @@ public class IngredientServiceImpl implements IngredientService
         this.ingredientRepository = ingredientRepository;
         this.categoryRepository = categoryRepository;
     }
-
     @Override
     public List<IngredientDTO> findAll()
     {
@@ -83,5 +82,10 @@ public class IngredientServiceImpl implements IngredientService
         if (!ingredientRepository.existsById(id))
             throw new NotFoundException();
         ingredientRepository.deleteById(id);
+    }
+
+    public void setEntityManager(EntityManager entityManager)
+    {
+        this.entityManager = entityManager;
     }
 }
