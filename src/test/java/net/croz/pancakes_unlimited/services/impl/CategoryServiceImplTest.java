@@ -1,18 +1,19 @@
 package net.croz.pancakes_unlimited.services.impl;
 
-import net.croz.pancakes_unlimited.config.AppConfig;
+import net.croz.pancakes_unlimited.PancakesUnlimitedApplication;
 import net.croz.pancakes_unlimited.exceptions.NotFoundException;
 import net.croz.pancakes_unlimited.models.dtos.CategoryDTO;
 import net.croz.pancakes_unlimited.models.entities.CategoryEntity;
 import net.croz.pancakes_unlimited.repositories.CategoryEntityRepository;
+import net.croz.pancakes_unlimited.services.CategoryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
-import org.springframework.context.annotation.Import;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,20 +23,18 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-//@ExtendWith(SpringExtension.class)
-//@RunWith(MockitoJUnitRunner.class)
-@ExtendWith(MockitoExtension.class)
-@Import(AppConfig.class)
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = PancakesUnlimitedApplication.class)
 class CategoryServiceImplTest
 {
     @Mock
     private CategoryEntityRepository categoryRepository;
     @InjectMocks
     private ModelMapper modelMapper;
-    private CategoryServiceImpl categoryService;
+    private CategoryService categoryService;
 
     @BeforeEach
-    public void setUp() throws Exception
+    public void setUp()
     {
         categoryService = new CategoryServiceImpl(categoryRepository,modelMapper);
     }
@@ -54,7 +53,7 @@ class CategoryServiceImplTest
         assertThat(resultDTO).isEqualTo(expectedResult);
     }
 
-
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Test
     void findById_returnResult()
     {

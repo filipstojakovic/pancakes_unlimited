@@ -151,7 +151,7 @@ class OrderControllerTest
     void findByOrderNumber_validRequest_authorized_return200AndResult()
     {
         String orderNumber = UUID.randomUUID().toString();
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/orders/{orderNumber}", orderNumber);
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/orders?orderNumber={orderNumber}", orderNumber);
 
         OrderDTO expectedResponse = new OrderDTO(1, new Date(), "cool description", UUID.randomUUID().toString(),
                 List.of(new OrderedPancakeResp(1, new BigDecimal(2))),
@@ -173,7 +173,7 @@ class OrderControllerTest
     void findByOrderNumber_validRequest_Forbidden_return403()
     {
         String orderNumber = UUID.randomUUID().toString();
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/orders/{orderNumber}", orderNumber);
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/orders?orderNumber={orderNumber}", orderNumber);
         mockMvc.perform(request).andExpect(status().is(SC_FORBIDDEN));
     }
 
@@ -182,7 +182,7 @@ class OrderControllerTest
     void findByOrderNumber_validRequest_unauthorized_return401()
     {
         String orderNumber = UUID.randomUUID().toString();
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/orders/{orderNumber}", orderNumber);
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/orders?orderNumber={orderNumber}", orderNumber);
         mockMvc.perform(request).andExpect(status().is(SC_UNAUTHORIZED));
     }
 
