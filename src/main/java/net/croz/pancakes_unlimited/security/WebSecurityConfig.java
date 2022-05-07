@@ -37,6 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
         AuthorizedUsers authorizedUsers = JsonParserUtil.getObjectFromJson("users.json", AuthorizedUsers.class);
         List<User> users = authorizedUsers.getUsers();
 
+//        PasswordEncoder passwordEncoder = passwordEncoder();
         var inMemoryAuth = auth.inMemoryAuthentication();
         users.forEach(user ->
             {

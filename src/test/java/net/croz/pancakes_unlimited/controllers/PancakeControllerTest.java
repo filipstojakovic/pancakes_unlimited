@@ -7,6 +7,7 @@ import lombok.SneakyThrows;
 import net.croz.pancakes_unlimited.exceptions.NotFoundException;
 import net.croz.pancakes_unlimited.models.dtos.CategoryDTO;
 import net.croz.pancakes_unlimited.models.dtos.PancakeDTO;
+import net.croz.pancakes_unlimited.models.entities.PancakeEntity;
 import net.croz.pancakes_unlimited.models.requests.PancakeRequest;
 import net.croz.pancakes_unlimited.models.responses.PancakeIngredientResponse;
 import net.croz.pancakes_unlimited.services.PancakeService;
@@ -116,7 +117,7 @@ class PancakeControllerTest
     {
         int id = -1;
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/pancakes/{id}", id);
-        when(pancakeService.findById(id)).thenThrow(new NotFoundException());
+        when(pancakeService.findById(id)).thenThrow(new NotFoundException(PancakeEntity.class,id));
 
         MvcResult result = mockMvc.perform(request).andExpect(status().is(SC_NOT_FOUND)).andReturn();
     }
@@ -255,7 +256,7 @@ class PancakeControllerTest
                 .content(requestObjectAsJson);
 
         when(pancakeService.update(id, requestObject))
-                .thenThrow(new NotFoundException());
+                .thenThrow(new NotFoundException(PancakeEntity.class,id));
 
         MvcResult result = mockMvc.perform(request).andExpect(status().is(SC_NOT_FOUND)).andReturn();
 
@@ -322,7 +323,7 @@ class PancakeControllerTest
         int id = -1;
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.delete("/pancakes/{id}", id);
 
-        doThrow(new NotFoundException()).when(pancakeService).delete(id);
+        doThrow(new NotFoundException(PancakeEntity.class,id)).when(pancakeService).delete(id);
 
         MvcResult result = mockMvc.perform(request).andExpect(status().is(SC_NOT_FOUND)).andReturn();
     }

@@ -33,17 +33,18 @@ public class IngredientServiceImpl implements IngredientService
         this.ingredientRepository = ingredientRepository;
         this.categoryRepository = categoryRepository;
     }
+
     @Override
     public List<IngredientDTO> findAll()
     {
         List<IngredientEntity> ingredientEntityList = ingredientRepository.findAll();
-        return MapUtils.mapList(ingredientEntityList,IngredientDTO.class,modelMapper);
+        return MapUtils.mapList(ingredientEntityList, IngredientDTO.class, modelMapper);
     }
 
     @Override
     public IngredientDTO findById(Integer id)
     {
-        IngredientEntity ingredientEntity = ingredientRepository.findById(id).orElseThrow(NotFoundException::new);
+        IngredientEntity ingredientEntity = ingredientRepository.findById(id).orElseThrow(()->new NotFoundException(IngredientEntity.class,id));
         return modelMapper.map(ingredientEntity, IngredientDTO.class);
     }
 
@@ -64,7 +65,7 @@ public class IngredientServiceImpl implements IngredientService
     public IngredientDTO update(Integer id, IngredientRequest ingredient)
     {
         if (!ingredientRepository.existsById(id))
-            throw new NotFoundException();
+            throw new NotFoundException(IngredientEntity.class, id);
 
         CategoryEntity categoryEntity = categoryRepository.findByName(ingredient.getCategoryName()).orElseThrow(NotFoundException::new);
         IngredientEntity ingredientEntity = modelMapper.map(ingredient, IngredientEntity.class);
@@ -80,7 +81,7 @@ public class IngredientServiceImpl implements IngredientService
     public void delete(Integer id)
     {
         if (!ingredientRepository.existsById(id))
-            throw new NotFoundException();
+            throw new NotFoundException(IngredientEntity.class, id);
         ingredientRepository.deleteById(id);
     }
 

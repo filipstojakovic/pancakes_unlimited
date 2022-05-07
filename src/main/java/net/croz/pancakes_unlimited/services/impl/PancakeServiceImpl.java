@@ -58,7 +58,7 @@ public class PancakeServiceImpl implements PancakeService
     @Override
     public PancakeDTO findById(Integer id)
     {
-        PancakeEntity pancakeEntity = pancakeRepository.findById(id).orElseThrow(NotFoundException::new);
+        PancakeEntity pancakeEntity = pancakeRepository.findById(id).orElseThrow(()->new NotFoundException(PancakeEntity.class,id));
         return MapUtils.mapPancakeEntityToPancakeDTO(pancakeEntity, modelMapper);
     }
 
@@ -90,7 +90,7 @@ public class PancakeServiceImpl implements PancakeService
         List<IngredientEntity> ingredientEntityList = getIngredientEntitiesByIds(requestIngredientsId);
         this.validatePancakeIngredients(ingredientEntityList);
 
-        PancakeEntity pancakeToUpdate = pancakeRepository.findById(id).orElseThrow(NotFoundException::new);
+        PancakeEntity pancakeToUpdate = pancakeRepository.findById(id).orElseThrow(()->new NotFoundException(PancakeEntity.class,id));
         if (pancakeToUpdate.getOrder() != null)
             throw new PancakeAlreadyOrderedException();
 
@@ -109,7 +109,7 @@ public class PancakeServiceImpl implements PancakeService
     @Override
     public void delete(Integer id)
     {
-        PancakeEntity pancake = pancakeRepository.findById(id).orElseThrow(NotFoundException::new);
+        PancakeEntity pancake = pancakeRepository.findById(id).orElseThrow(()->new NotFoundException(PancakeEntity.class,id));
         if (pancake.getOrder() != null)
             throw new PancakeAlreadyOrderedException();
 

@@ -7,6 +7,7 @@ import lombok.SneakyThrows;
 import net.croz.pancakes_unlimited.exceptions.NotFoundException;
 import net.croz.pancakes_unlimited.models.dtos.CategoryDTO;
 import net.croz.pancakes_unlimited.models.dtos.IngredientDTO;
+import net.croz.pancakes_unlimited.models.entities.IngredientEntity;
 import net.croz.pancakes_unlimited.models.requests.IngredientRequest;
 import net.croz.pancakes_unlimited.services.IngredientService;
 import org.junit.jupiter.api.BeforeAll;
@@ -115,7 +116,7 @@ class IngredientControllerTest
     {
         int id = 5;
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/ingredients/{id}", id);
-        when(ingredientService.findById(id)).thenThrow(new NotFoundException());
+        when(ingredientService.findById(id)).thenThrow(new NotFoundException(IngredientEntity.class,id));
 
         MvcResult result = mockMvc.perform(request).andExpect(status().is(SC_NOT_FOUND)).andReturn();
     }
@@ -252,7 +253,7 @@ class IngredientControllerTest
 
         IngredientDTO expectedResponse = new IngredientDTO(id, "nutela", true, new BigDecimal("1.23"), new CategoryDTO(1, "fil"));
         when(ingredientService.update(id, requestObject))
-                .thenThrow(new NotFoundException());
+                .thenThrow(new NotFoundException(IngredientEntity.class,id));
 
         MvcResult result = mockMvc.perform(request).andExpect(status().is(SC_NOT_FOUND)).andReturn();
 
@@ -324,7 +325,7 @@ class IngredientControllerTest
         int id = 1;
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.delete("/ingredients/{id}", id);
 
-        doThrow(new NotFoundException()).when(ingredientService).delete(id);
+        doThrow(new NotFoundException(IngredientEntity.class,id)).when(ingredientService).delete(id);
 
         MvcResult result = mockMvc.perform(request).andExpect(status().is(SC_NOT_FOUND))
                 .andReturn();

@@ -19,6 +19,16 @@ public class ReportRepositoryImpl implements ReportRepository
         this.entityManager = entityManager;
     }
 
+    //SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
+    //need to disable strict mode.
+    //To check whether strict mode is enabled or not run the below sql:
+    //SHOW VARIABLES LIKE 'sql_mode';
+    //If one of the value is STRICT_TRANS_TABLES, then strict mode is enabled,
+    //To disable strict mode run the below sql:
+    //set global sql_mode='';
+    //or
+    //SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
+    @Override
     @SuppressWarnings("unchecked")
     public List<Object[]> getMostOrderedIngredientsLast30Days()
     {

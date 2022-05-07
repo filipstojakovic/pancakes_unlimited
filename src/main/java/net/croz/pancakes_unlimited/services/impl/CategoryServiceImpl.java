@@ -35,7 +35,7 @@ public class CategoryServiceImpl implements CategoryService
     @Override
     public CategoryDTO findById(Integer id)
     {
-        CategoryEntity categoryEntity = categoryRepository.findById(id).orElseThrow(NotFoundException::new);
+        CategoryEntity categoryEntity = categoryRepository.findById(id).orElseThrow(()->new NotFoundException(CategoryEntity.class,id));
         return modelMapper.map(categoryEntity, CategoryDTO.class);
     }
 }

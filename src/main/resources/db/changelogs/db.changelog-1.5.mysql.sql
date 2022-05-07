@@ -20,3 +20,6 @@ ALTER TABLE sales_order
 -- changeset filip:24
 ALTER TABLE sales_order
     MODIFY order_date DATETIME NOT NULL;
+
+-- changeset filip:25
+SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));

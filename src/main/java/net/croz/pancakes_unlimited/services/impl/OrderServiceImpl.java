@@ -63,7 +63,7 @@ public class OrderServiceImpl implements OrderService
     @Override
     public OrderDTO findById(Integer id)
     {
-        OrderEntity orderEntity = orderRepository.findById(id).orElseThrow(NotFoundException::new);
+        OrderEntity orderEntity = orderRepository.findById(id).orElseThrow(()->new NotFoundException(OrderEntity.class,id));
 
         return mapToOrderDTO(orderEntity, modelMapper);
     }
@@ -189,7 +189,7 @@ public class OrderServiceImpl implements OrderService
     {
         return orderRequest.getPancakeIds().stream().map(pancakeId ->
             {
-                PancakeEntity pancake = pancakeRepository.findById(pancakeId).orElseThrow(NotFoundException::new);
+                PancakeEntity pancake = pancakeRepository.findById(pancakeId).orElseThrow(()->new NotFoundException(PancakeEntity.class,pancakeId));
                 if (pancake.getOrder() != null)
                     throw new PancakeAlreadyOrderedException("Pancake id " + pancake.getId() + " already ordered");
                 pancake.setOrder(newOrderEntity);

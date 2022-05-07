@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import net.croz.pancakes_unlimited.exceptions.NotFoundException;
 import net.croz.pancakes_unlimited.models.dtos.CategoryDTO;
+import net.croz.pancakes_unlimited.models.entities.CategoryEntity;
 import net.croz.pancakes_unlimited.services.CategoryService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,7 +99,7 @@ class CategoryControllerTest
     {
         int id = 5;
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/categories/{id}", id);
-        when(categoryService.findById(id)).thenThrow(new NotFoundException());
+        when(categoryService.findById(id)).thenThrow(new NotFoundException(CategoryEntity.class,id));
 
         MvcResult result = mockMvc.perform(request).andExpect(status().is(SC_NOT_FOUND)).andReturn();
     }

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.SneakyThrows;
 import net.croz.pancakes_unlimited.exceptions.NotFoundException;
 import net.croz.pancakes_unlimited.models.dtos.OrderDTO;
+import net.croz.pancakes_unlimited.models.entities.OrderEntity;
 import net.croz.pancakes_unlimited.models.requests.OrderRequest;
 import net.croz.pancakes_unlimited.models.responses.OrderedPancakeResp;
 import net.croz.pancakes_unlimited.services.OrderService;
@@ -119,7 +120,7 @@ class OrderControllerTest
     {
         int id = -1;
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/orders/{id}", id);
-        when(orderService.findById(id)).thenThrow(new NotFoundException());
+        when(orderService.findById(id)).thenThrow(new NotFoundException(OrderEntity.class,id));
 
         MvcResult result = mockMvc.perform(request).andExpect(status().is(SC_NOT_FOUND)).andReturn();
     }
