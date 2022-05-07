@@ -20,6 +20,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -30,18 +31,18 @@ import java.util.stream.Collectors;
 @Transactional
 public class OrderServiceImpl implements OrderService
 {
-    public static final BigDecimal ONE_HUNDRED = new BigDecimal(100);
     public static final BigDecimal TWENTY = new BigDecimal(20);
     public static final BigDecimal FIVE = new BigDecimal(5);
     public static final BigDecimal FIFTY = new BigDecimal(50);
     public static final BigDecimal TEN = new BigDecimal(10);
-    public static final Integer SEVENTY_FIVE = new Integer(75);
+    public static final Integer SEVENTY_FIVE = 75;
     public static final BigDecimal FIFTEEN = new BigDecimal(15);
 
     private final PancakeEntityRepository pancakeRepository;
     private final OrderEntityRepository orderRepository;
 
     private final ModelMapper modelMapper;
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -68,10 +69,15 @@ public class OrderServiceImpl implements OrderService
     }
 
     @Override
+    public OrderDTO findByOrderNumber(String orderNumber)
+    {
+        OrderEntity orderEntity = orderRepository.findOrderEntityByOrderNumber(orderNumber).orElseThrow(NotFoundException::new);
+        return mapToOrderDTO(orderEntity, modelMapper);
+    }
+
+    @Override
     public OrderDTO insert(OrderRequest orderRequest)
     {
-        //TODO: check discount
-
         OrderEntity newOrderEntity = new OrderEntity();
 
         String description = orderRequest.getDescription() == null ? "" : orderRequest.getDescription();
@@ -84,7 +90,7 @@ public class OrderServiceImpl implements OrderService
         String generatedUUID = UUID.randomUUID().toString();
         newOrderEntity.setOrderNumber(generatedUUID);
 
-        Date currentDate = new Date();
+        Date currentDate = Date.from(Instant.now());
         newOrderEntity.setOrderDate(currentDate);
 
         newOrderEntity = orderRepository.saveAndFlush(newOrderEntity);
@@ -132,7 +138,7 @@ public class OrderServiceImpl implements OrderService
 
     private BigDecimal calculateDiscount(List<PancakeEntity> orderedPancakes, BigDecimal totalPrice)
     {
-        BigDecimal discount = new BigDecimal(0);
+        BigDecimal discount;
 
         if (totalPrice.compareTo(TWENTY) <= 0) // totalPrice <=20, every pancake with more than 75% healthy ingredients has discount 15%
         {
@@ -158,14 +164,14 @@ public class OrderServiceImpl implements OrderService
             List<PancakeHasIngredient> pancakeHasIngredients = orderedPancake.getPancakeIngredients();
 
             int numOfIngredients = pancakeHasIngredients.size();
-            long healthyIngredientPercentage = Math.round(Utils.percentage(numOfIngredients, SEVENTY_FIVE));
+            long numOfIngredientsForHealthyPancake = (long) (Utils.percentage(numOfIngredients, SEVENTY_FIVE)); // Math.floor
 
             long numOfHealthyIngredients = pancakeHasIngredients.stream()
                     .map(PancakeHasIngredient::getIngredient)
                     .filter(IngredientEntity::getIsHealthy)
                     .count();
 
-            if (numOfHealthyIngredients > healthyIngredientPercentage)
+            if (numOfHealthyIngredients > numOfIngredientsForHealthyPancake)
             {
                 BigDecimal pancakePrice = pancakeHasIngredients.stream()
                         .map(PancakeHasIngredient::getPrice)
@@ -191,11 +197,8 @@ public class OrderServiceImpl implements OrderService
             }).collect(Collectors.toList());
     }
 
-    @Override
-    public OrderDTO findByOrderNumber(String orderNumber)
+    public void setEntityManager(EntityManager entityManager)
     {
-        OrderEntity orderEntity = orderRepository.findOrderEntityByOrderNumber(orderNumber).orElseThrow(NotFoundException::new);
-        return modelMapper.map(orderEntity, OrderDTO.class);
+        this.entityManager = entityManager;
     }
-
 }

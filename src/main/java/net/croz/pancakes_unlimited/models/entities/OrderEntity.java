@@ -34,6 +34,15 @@ public class OrderEntity
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
     private List<PancakeEntity> pancakeEntityList = new ArrayList<>();
 
+    public OrderEntity(Integer id, Date orderDate, String description, String orderNumber, List<PancakeEntity> pancakeEntityList)
+    {
+        this.id = id;
+        this.orderDate = orderDate;
+        this.description = description;
+        this.orderNumber = orderNumber;
+        this.pancakeEntityList = pancakeEntityList;
+    }
+
     @CreatedDate
     @Column(name = "created_at", updatable = false)
     private Date createdAt;

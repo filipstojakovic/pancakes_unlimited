@@ -13,4 +13,9 @@ public class NotFoundException extends HttpException
     {
         super(HttpStatus.NOT_FOUND, data);
     }
+
+    public NotFoundException(Class<?> clazz, int id)
+    {
+        super(HttpStatus.NOT_FOUND, clazz.getSimpleName() + " with id: " + id + " does not exist");
+    }
 }

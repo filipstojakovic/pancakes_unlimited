@@ -1,8 +1,8 @@
 package net.croz.pancakes_unlimited.services.impl;
 
-import net.croz.pancakes_unlimited.exceptions.InvalidPancakeException;
 import net.croz.pancakes_unlimited.exceptions.NotFoundException;
 import net.croz.pancakes_unlimited.exceptions.PancakeAlreadyOrderedException;
+import net.croz.pancakes_unlimited.exceptions.PancakeNotValidException;
 import net.croz.pancakes_unlimited.models.dtos.PancakeDTO;
 import net.croz.pancakes_unlimited.models.entities.IngredientEntity;
 import net.croz.pancakes_unlimited.models.entities.PancakeEntity;
@@ -21,6 +21,9 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static net.croz.pancakes_unlimited.exceptions.PancakeNotValidException.AT_LEAST_ONE_FIL_ALLOWED;
+import static net.croz.pancakes_unlimited.exceptions.PancakeNotValidException.ONLY_ONE_BASE_ALLOWED;
 
 @Service
 @Transactional
@@ -63,9 +66,9 @@ public class PancakeServiceImpl implements PancakeService
     public PancakeDTO insert(PancakeRequest pancakeRequest)
     {
         List<Integer> requestIngredientsId = new ArrayList(pancakeRequest.getIngredientsId());
-        this.validatePancakeIngredientsId(requestIngredientsId);
-
         List<IngredientEntity> ingredientEntityList = getIngredientEntitiesByIds(requestIngredientsId);
+        this.validatePancakeIngredients(ingredientEntityList);
+
         ingredientEntityList = ingredientEntityList.stream().distinct().collect(Collectors.toList());
 
         PancakeEntity newPancake = new PancakeEntity();
@@ -81,16 +84,16 @@ public class PancakeServiceImpl implements PancakeService
     public PancakeDTO update(Integer id, PancakeRequest pancakeRequest)
     {
         if (!pancakeRepository.existsById(id))
-            throw new NotFoundException();
+            throw new NotFoundException(PancakeEntity.class,id);
 
         List<Integer> requestIngredientsId = new ArrayList(pancakeRequest.getIngredientsId());
-        this.validatePancakeIngredientsId(requestIngredientsId);
+        List<IngredientEntity> ingredientEntityList = getIngredientEntitiesByIds(requestIngredientsId);
+        this.validatePancakeIngredients(ingredientEntityList);
 
         PancakeEntity pancakeToUpdate = pancakeRepository.findById(id).orElseThrow(NotFoundException::new);
         if (pancakeToUpdate.getOrder() != null)
             throw new PancakeAlreadyOrderedException();
 
-        List<IngredientEntity> ingredientEntityList = getIngredientEntitiesByIds(requestIngredientsId);
         var newPancakeHasIngredient = MapUtils.createPancakeHasIngredients(ingredientEntityList, pancakeToUpdate);
 
         pancakeToUpdate.setId(id);
@@ -113,24 +116,18 @@ public class PancakeServiceImpl implements PancakeService
         pancakeRepository.deleteById(id);
     }
 
-    public void validatePancakeIngredientsId(List<Integer> ingredientIdList)
-    {
-        List<IngredientEntity> ingredientEntityList = getIngredientEntitiesByIds(ingredientIdList);
-        this.validatePancakeIngredients(ingredientEntityList);
-    }
-
     public void validatePancakeIngredients(List<IngredientEntity> ingredientEntityList)
     {
         long numOfBases = ingredientEntityList.stream()
-                .filter(ingredient -> "baza".equals(ingredient.getIngredientCategory().getName()))
+                .filter(ingredient -> "baza".equals(ingredient.getIngredientCategory().getName().toLowerCase().trim()))
                 .count();
         if (numOfBases != NUMBER_OF_ALLOWED_BASES)
-            throw new InvalidPancakeException("Pancake does not have exactly one ingredient of type baza");
+            throw new PancakeNotValidException(ONLY_ONE_BASE_ALLOWED);
 
         boolean hasIngredientOfTypeFil = ingredientEntityList.stream()
-                .anyMatch(ingredient -> "fil".equals(ingredient.getIngredientCategory().getName()));
+                .anyMatch(ingredient -> "fil".equals(ingredient.getIngredientCategory().getName().toLowerCase().trim()));
         if (!hasIngredientOfTypeFil)
-            throw new InvalidPancakeException("Pancake does not have at least one ingredient of type fil");
+            throw new PancakeNotValidException(AT_LEAST_ONE_FIL_ALLOWED);
     }
 
     private List<IngredientEntity> getIngredientEntitiesByIds(List<Integer> ingredientsId)
@@ -140,8 +137,13 @@ public class PancakeServiceImpl implements PancakeService
         {
             ingredientEntityList.add(ingredientRepository
                     .findById(ingredientId)
-                    .orElseThrow(() -> new NotFoundException("ingredient with id \"" + ingredientId + "\" does not exist")));
+                    .orElseThrow(() -> new NotFoundException(IngredientEntity.class, ingredientId)));
         }
         return ingredientEntityList;
+    }
+
+    public void setEntityManager(EntityManager entityManager)
+    {
+        this.entityManager = entityManager;
     }
 }

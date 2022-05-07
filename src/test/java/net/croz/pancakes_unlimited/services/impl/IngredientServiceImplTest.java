@@ -51,6 +51,8 @@ class IngredientServiceImplTest
         serviceUnderTest = ingredientServiceImp;
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     @Test
     void findAll_returnResult()
     {
@@ -171,7 +173,7 @@ class IngredientServiceImplTest
 
         var request = new IngredientRequest("nutela", "fil", true, new BigDecimal("1.2"));
 
-        assertThatThrownBy(() -> serviceUnderTest.update(id,request))
+        assertThatThrownBy(() -> serviceUnderTest.update(id, request))
                 .isInstanceOf(NotFoundException.class);
     }
 
@@ -184,7 +186,7 @@ class IngredientServiceImplTest
         var request = new IngredientRequest("nutela", "fil", true, new BigDecimal("1.2"));
         when(categoryRepository.findByName(request.getCategoryName())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> serviceUnderTest.update(id,request))
+        assertThatThrownBy(() -> serviceUnderTest.update(id, request))
                 .isInstanceOf(NotFoundException.class);
     }
 
@@ -199,7 +201,7 @@ class IngredientServiceImplTest
         when(ingredientRepository.existsById(id)).thenReturn(true);
         when(categoryRepository.findByName(request.getCategoryName())).thenReturn(Optional.of(categoryEntity));
 
-        assertThatThrownBy(() -> serviceUnderTest.update(id,request))
+        assertThatThrownBy(() -> serviceUnderTest.update(id, request))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 

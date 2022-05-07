@@ -34,6 +34,12 @@ public class PancakeEntity
     @JoinColumn(name = "sales_order_id", nullable = true)
     private OrderEntity order;
 
+    public PancakeEntity(Integer id, List<PancakeHasIngredient> pancakeIngredients, OrderEntity order)
+    {
+        this.id = id;
+        this.pancakeIngredients = pancakeIngredients;
+        this.order = order;
+    }
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)

@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Data
@@ -13,5 +14,6 @@ import java.util.Set;
 public class PancakeRequest
 {
     @NotEmpty
+    @Size(min = 2) // 1 base + 1 fil
     Set<Integer> ingredientsId;
 }

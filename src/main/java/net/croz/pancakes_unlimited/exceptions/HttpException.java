@@ -24,8 +24,16 @@ public class HttpException extends RuntimeException
         this(HttpStatus.INTERNAL_SERVER_ERROR, data);
     }
 
+    public HttpException(HttpStatus status, String data)
+    {
+        super(data);
+        this.status = status;
+        this.data = data;
+    }
+
     public HttpException(HttpStatus status, Object data)
     {
+        super(data.toString());
         this.status = status;
         this.data = data;
     }
