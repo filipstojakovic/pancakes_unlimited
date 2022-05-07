@@ -41,3 +41,4 @@ build/
 /logs/
 /mysql_docker/mysql.env
 /src/main/resources/users-encoded.json
+/Thunder Client Collections/
