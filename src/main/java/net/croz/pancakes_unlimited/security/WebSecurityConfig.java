@@ -63,7 +63,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
     @Override
     protected void configure(HttpSecurity http) throws Exception
     {
-        //TODO: describe rules defined in json
         AuthorizationRules authorizationRules = JsonParserUtil.getObjectFromJson("rules.json", AuthorizationRules.class);
         var interceptor = http.httpBasic().and().authorizeRequests();
         interceptor = interceptor.antMatchers(HttpMethod.GET, SWAGGER_ANT_PATTERN).permitAll();
